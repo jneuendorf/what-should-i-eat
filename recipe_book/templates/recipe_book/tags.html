@@ -1,0 +1,8 @@
+<ul>
+{% for tag in tags %}
+    <li>
+        <span>{{ tag.name }}</span>
+        <div style="background-color: {{tag.color}}; display: inline-block; width: 20px; height: 20px;"></div>
+    </li>
+{% endfor %}
+</ul>
