@@ -8,7 +8,6 @@ class Tag(models.Model):
 
     name = models.CharField(max_length=80)
     color = ColorField(default="2f9de3")
-    # recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

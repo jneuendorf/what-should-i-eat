@@ -31,15 +31,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'colorfield',
-    # 'recipe_book.apps.RecipeBookConfig',
-    'recipe_book',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'colorfield',
+    'jquery',
+
+    'recipe_book',
 ]
 
 MIDDLEWARE = [
