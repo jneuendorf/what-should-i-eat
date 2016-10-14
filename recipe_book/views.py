@@ -10,8 +10,8 @@ def index(request):
     recipes = Recipe.objects.order_by('name')
     return render(request, 'recipe_book/index.html', {'recipes': recipes})
 
-def add(request):
-    return HttpResponse("You want to add a recipe?")
+# def add(request):
+#     return HttpResponse("You want to add a recipe?")
 
 def detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
