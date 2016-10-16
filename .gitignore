@@ -1,2 +1,4 @@
 src
 *.pyc
+recipe_book/static/**/*.css
+recipe_book/static/**/*.css.map

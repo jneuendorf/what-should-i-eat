@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'colorfield',
     'jquery',
+    'sass_processor',
 
     'recipe_book',
 ]
@@ -123,3 +124,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/Users/jimneuendorf/Developer/django/what-should-i-eat/'
+SASS_PROCESSOR_ROOT = STATIC_ROOT + 'recipe_book/static/'
+
+STATICFILES_DIRS = [
+    # shared assets among all apps
+    os.path.join(BASE_DIR, "static"),
+]
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+)

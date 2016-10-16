@@ -1,2 +1,5 @@
 django-colorfield
 django-jquery
+libsass
+django-compressor
+django-sass-processor
