@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
+import recipe_book
 
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the root index.")
+    recipes = recipe_book.views.recipes()
+    suggested_recipe = recipes[0]
+    return render(request, 'what_should_i_eat/index.html', {'suggested_recipe': suggested_recipe})

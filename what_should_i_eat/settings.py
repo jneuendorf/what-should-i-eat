@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'sass_processor',
 
     'recipe_book',
+    'what_should_i_eat',
 ]
 
 MIDDLEWARE = [

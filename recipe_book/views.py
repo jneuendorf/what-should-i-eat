@@ -20,3 +20,6 @@ def detail(request, recipe_id):
 def tags(request):
     tags = Tag.objects.order_by('name')
     return render(request, 'recipe_book/tags.html', {'tags': tags})
+
+def recipes():
+    return Recipe.objects.all()

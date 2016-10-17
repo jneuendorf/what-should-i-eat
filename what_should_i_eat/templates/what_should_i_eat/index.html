@@ -1,0 +1,55 @@
+{% extends "what_should_i_eat/base.html" %}
+{% load sass_tags %}
+{# {% load wsie_filters %}#}
+
+{% block head %}
+    {{ block.super }}
+    <link href="{% sass_src 'what_should_i_eat/css/index.sass' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block header %}
+    <div class="page-header">
+        <h1>What should I eat?</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% if suggested_recipe %}
+        <div class="suggested_recipe">
+            <h2>
+                <small>Suggested for you -</small>
+                {{ suggested_recipe.name }}
+            </h2>
+            <div class="row">
+                <div class="col col-xs-2">
+                    <h3>Tags:</h3>
+                </div>
+                <div class="col col-xs-10">
+                    <h3>
+                        {% for tag in suggested_recipe.tags.all %}
+                            <span class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</span>
+                        {% endfor %}
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-2">
+                    <h3>Ingredients:</h3>
+                </div>
+                <div class="col col-xs-10 text">
+                    <span>
+                        {{ suggested_recipe.ingredients }}
+                    </span>
+                </div>
+            </div>
+            <div>
+                <h3>How to cook:</h3>
+                <div>
+                    {{ suggested_recipe.description }}
+                </div>
+            </div>
+        {% else %}
+            You don't have any recipes yet. Go the the <a href="{% url 'recipe_book:index' %}">Recipe Book</a> and add some.
+        {% endif %}
+    </div>
+{% endblock %}
