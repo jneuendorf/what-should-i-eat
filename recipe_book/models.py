@@ -18,8 +18,8 @@ class Recipe(models.Model):
 
     name = models.CharField(max_length=200)
     ingredients = models.CharField(max_length=400)
-    description = models.CharField(max_length=2000)
-    cooked_last = models.DateTimeField('cooked last on')
+    description = models.TextField()
+    cooked_last = models.DateField('cooked last on')
     tags = models.ManyToManyField(Tag)
 
     def __str__(self):

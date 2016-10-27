@@ -1,8 +1,45 @@
-.suggested_recipe
-    font-size: 17px
+$options-margin: 10px
+$option-size: 100px
+$option-font-size: $option-size / 3
+$option-yes-color: #3c763d
+$option-yes-bg-color: #dff0d8
+$option-no-color: #a94442
+$option-no-bg-color: #f2dede
 
-    .row .col
-        height: 56px
+.options
+    text-align: center
+    margin-bottom: $options-margin
 
-        &.text > span
-            line-height: 72px
+    .option
+        align-items: center
+        border:
+            width: 1px
+            style: solid
+        border-radius: 50%
+        cursor: pointer
+        display: flex
+        font-size: $option-font-size
+        height: $option-size
+        justify-content: center
+        padding: 12px
+        width: $option-size
+
+        &:hover
+            font-size: $option-font-size * 1.2
+
+        &.yes
+            color: $option-yes-color
+            background-color: $option-yes-bg-color
+            border-color: darken($option-yes-bg-color, 25%)
+            float: right
+            margin-right: $options-margin
+            &:hover
+                background-color: darken($option-yes-bg-color, 10%)
+        &.no
+            color: $option-no-color
+            background-color: $option-no-bg-color
+            border-color: darken($option-no-bg-color, 25%)
+            float: left
+            margin-left: $options-margin
+            &:hover
+                background-color: darken($option-no-bg-color, 10%)

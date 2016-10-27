@@ -1,6 +1,67 @@
-<h1>{{ recipe.name }}</h1>
-<ul>
-{% for tag in recipe.tags.all %}
-    <li>{{ tag.name }}</li>
-{% endfor %}
-</ul>
+{% extends "what_should_i_eat/base.html" %}
+{% load sass_tags %}
+{# {% load wsie_filters %} #}
+
+{% block head %}
+    {{ block.super }}
+    <link href="{% sass_src 'recipe_book/css/detail.sass' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block nav %}
+    <ul class="pager">
+        <li class="previous">
+            <a class="btn btn-default" href="{% url 'recipe_book:index' %}" role="button">
+                <span aria-hidden="true">&larr;</span>
+                Back
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    {% if recipe %}
+        <div class="recipe">
+            <div class="alert alert-info recipe_name">
+                <h1>
+                    {{ recipe.name }}
+                </h1>
+            </div>
+            <div class="row">
+                <div class="col col-xs-2">
+                    <h3>Tags:</h3>
+                </div>
+                <div class="col col-xs-10">
+                    <h3>
+                        {% for tag in recipe.tags.all %}
+                            <span class="label" style="background-color: #{{ tag.color }};">{{ tag.name }}</span>
+                        {% endfor %}
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-xs-2">
+                    <h3>Ingredients:</h3>
+                </div>
+                <div class="col col-xs-10">
+                    <h4 class="text">
+                        {{ recipe.ingredients }}
+                    </h4>
+                </div>
+            </div>
+            <div>
+                <div class="page-header">
+                    <h3>How to cook:</h3>
+                </div>
+                <div class="description">
+                    {% autoescape off %}
+                        {{ recipe.description }}
+                    {% endautoescape %}
+                </div>
+            </div>
+        {% else %}
+            You don't have any recipes yet. Go the the <a href="{% url 'recipe_book:index' %}">Recipe Book</a> and add some.
+        {% endif %}
+    </div>
+{% endblock %}

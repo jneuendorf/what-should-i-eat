@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'colorfield',
     'jquery',
     'sass_processor',
+    # 'tinymce',
 
+    'shared',
     'recipe_book',
     'what_should_i_eat',
 ]
@@ -125,16 +127,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/Users/jimneuendorf/Developer/django/what-should-i-eat/'
-SASS_PROCESSOR_ROOT = STATIC_ROOT + 'recipe_book/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, "static")
 
-STATICFILES_DIRS = [
-    # shared assets among all apps
-    os.path.join(BASE_DIR, "static"),
-]
+# STATICFILES_DIRS = [
+#     # shared assets among all apps
+#     os.path.join(BASE_DIR, "static"),
+# ]
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
 )
+
+# # TINYMCE
+#
+# TINYMCE_DEFAULT_CONFIG = {
+#     'plugins': "table,spellchecker,paste,searchreplace",
+#     # 'theme': "advanced",
+#     'cleanup_on_startup': True,
+#     'custom_undo_redo_levels': 30,
+#     'height': 300
+# }
+# TINYMCE_SPELLCHECKER = True
+# TINYMCE_COMPRESSOR = True

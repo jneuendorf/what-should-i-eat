@@ -19,6 +19,8 @@ from . import views
 
 
 urlpatterns = [
+    # # tinymce
+    # url(r'^tinymce/', include('tinymce.urls')),
     # landing page
     url(r'^$', views.index, name='index'),
     # recipe book

@@ -1,17 +1,30 @@
-<!DOCTYPE html>
+{% extends "what_should_i_eat/base.html" %}
+
 {% load staticfiles %}
-{% load sass_tags %}
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>What should I eat - Recipe Book</title>
-    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% sass_src 'recipe_book/css/test.sass' %}" rel="stylesheet" type="text/css" />
-</head>
-<body>
+
+{% block title %}What should I eat? - Recipe Book{% endblock %}
+
+{% block nav %}
+    <ul class="pager">
+        <li class="previous">
+            <a class="btn btn-default" href="{% url 'index' %}" role="button">
+                <span aria-hidden="true">&larr;</span>
+                Back
+            </a>
+        </li>
+        <li class="next">
+            <a href="{% url 'recipe_book:add' %}" role="button">
+                add recipe
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
     {% if recipes %}
-        <ul>
+        <h3>Your Recipes:</h3>
+        <ul class="nav nav-pills nav-stacked">
         {% for recipe in recipes %}
             <li>
                 <a href="{% url 'recipe_book:detail' recipe.id %}">{{ recipe.name }}</a>
@@ -21,5 +34,4 @@
     {% else %}
         <p>No recipes are available.</p>
     {% endif %}
-</body>
-</html>
+{% endblock %}
