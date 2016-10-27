@@ -1,9 +1,0 @@
-{
-	"version": 3,
-	"file": "../../../Users/jimneuendorf/Developer/django/what-should-i-eat/recipe_book/static/recipe_book/css/test.css",
-	"sources": [
-		"../../../Users/jimneuendorf/Developer/django/what-should-i-eat/recipe_book/static/recipe_book/css/test.sass"
-	],
-	"mappings": "AAEA,AAAA,CAAC,CAAC;EACE,KAAK,EAHL,OAAO,GAGK",
-	"names": []
-}

@@ -1,9 +1,0 @@
-{
-	"version": 3,
-	"file": "../../../Users/jimneuendorf/Developer/django/what-should-i-eat/what_should_i_eat/static/what_should_i_eat/css/base.css",
-	"sources": [
-		"../../../Users/jimneuendorf/Developer/django/what-should-i-eat/what_should_i_eat/static/what_should_i_eat/css/base.sass"
-	],
-	"mappings": "AAAA,AAEI,IAFA,CAEA,MAAM,CAAC;EACH,UAAU,EAAE,GAAI,GAAG",
-	"names": []
-}

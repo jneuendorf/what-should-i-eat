@@ -1,10 +1,10 @@
 {% extends "what_should_i_eat/base.html" %}
-{% load sass_tags %}
-{# {% load wsie_filters %} #}
+{% load compile_static %}
+{% load staticfiles %}
 
 {% block head %}
     {{ block.super }}
-    <link href="{% sass_src 'recipe_book/css/detail.sass' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'recipe_book/css/detail.sass'|compile %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block header %}{% endblock %}

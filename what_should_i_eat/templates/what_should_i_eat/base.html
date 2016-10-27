@@ -1,14 +1,14 @@
 <!DOCTYPE html>
+{% load compile_static %}
 {% load staticfiles %}
-{% load sass_tags %}
 <html>
 <head>
     {% block head %}
         <meta charset="utf-8">
         <title>{{ title | title }}</title>
         <link href="{% static 'shared/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% sass_src 'what_should_i_eat/css/base.sass' %}" rel="stylesheet" type="text/css" />
-        <link href="{% sass_src 'recipe_book/css/test.sass' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'what_should_i_eat/css/base.sass'|compile %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'recipe_book/css/test.sass'|compile %}" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
     {% endblock %}
 </head>

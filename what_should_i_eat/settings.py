@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     'colorfield',
     'jquery',
-    'sass_processor',
+    'static_precompiler',
     # 'tinymce',
 
     'shared',
@@ -128,18 +128,30 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-# SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, "static")
-
-# STATICFILES_DIRS = [
-#     # shared assets among all apps
-#     os.path.join(BASE_DIR, "static"),
-# ]
 
 STATICFILES_FINDERS = (
+    # default finders
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder',
+    # others
+    'static_precompiler.finders.StaticPrecompilerFinder',
 )
+
+# STATIC_PRECOMPILER_COMPILERS = (
+#     ('static_precompiler.compilers.CoffeeScript', {
+#         # "executable": "/usr/local/bin/coffee",
+#         "sourcemap_enabled": True
+#     }),
+#     ('static_precompiler.compilers.SCSS', {
+#         "executable": "/Users/jimneuendorf/.rvm/gems/ruby-2.2.3@global/bin/sass",
+#         "sourcemap_enabled": True,
+#         # "compass_enabled": True,
+#         # "load_paths": ["/path"],
+#         "precision": 8,
+#         "output_style": "compressed"
+#     }),
+# )
+
 
 # # TINYMCE
 #

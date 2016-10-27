@@ -23,6 +23,8 @@ urlpatterns = [
     # url(r'^tinymce/', include('tinymce.urls')),
     # landing page
     url(r'^$', views.index, name='index'),
+    url(r'^cook_next_recipe/(?P<recipe_id>[0-9]+)/$', views.cook_next_recipe, name='cook_next_recipe'),
+    url(r'^dismiss_next_recipe/(?P<recipe_id>[0-9]+)/$', views.dismiss_next_recipe, name='dismiss_next_recipe'),
     # recipe book
     url(r'^recipe-book/', include('recipe_book.urls')),
     # admin
