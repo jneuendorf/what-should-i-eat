@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Recipe, Tag
+from .models import Recipe, Tag, Image
 
 
 # Register your models here.
@@ -15,3 +15,4 @@ from .models import Recipe, Tag
 
 admin.site.register(Recipe)
 admin.site.register(Tag)
+admin.site.register(Image)

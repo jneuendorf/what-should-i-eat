@@ -137,6 +137,9 @@ STATICFILES_FINDERS = (
     'static_precompiler.finders.StaticPrecompilerFinder',
 )
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # STATIC_PRECOMPILER_COMPILERS = (
 #     ('static_precompiler.compilers.CoffeeScript', {
 #         # "executable": "/usr/local/bin/coffee",

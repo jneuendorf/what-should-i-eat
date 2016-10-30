@@ -40,5 +40,17 @@ def tags(request):
     tags = Tag.objects.order_by('name')
     return render(request, 'recipe_book/tags.html', {'tags': tags})
 
-def recipes():
+
+# API to other apps
+def get_recipes():
     return Recipe.objects.all()
+
+def get_recipe(recipe_id):
+    return get_object_or_404(Recipe, pk=recipe_id)
+
+def get_tags():
+    return Tag.objects.all()
+
+def get_images_for_recipe(recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    return recipe.image_set.all()

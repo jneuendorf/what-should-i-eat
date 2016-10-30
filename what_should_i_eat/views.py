@@ -7,20 +7,28 @@ import recipe_book
 # Create your views here.
 
 def index(request):
-    recipes = recipe_book.views.recipes()
+    recipes = recipe_book.views.get_recipes()
     # TODO: add the logic here
     recipe = recipes[0]
+    tags = recipe_book.views.get_tags()
+    images = (image.image for image in recipe_book.views.get_images_for_recipe(recipe.id))
     return render(request, 'what_should_i_eat/index.html', {
         'title': 'suggested recipe',
         'recipe': recipe,
+        'tags': tags,
+        'images': images,
     })
 
-def cook_next_recipe(request, recipe_id):
+def cook_recipe(request, recipe_id):
+    recipe = recipe_book.views.get_recipe(recipe_id)
+
     # TODO: do the logic here
     print("chose this recipe #" + recipe_id)
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('recipe_book:detail', args=(recipe_id,)))
 
-def dismiss_next_recipe(request, recipe_id):
-    # TODO: do the logic here
-    print("skipping this recipe #" + recipe_id)
+def dismiss_recipe(request, recipe_id):
+    recipe = recipe_book.views.get_recipe(recipe_id)
+    recipe.priority += 1
+    recipe.save()
+    # stay on the same page and show next best recipe
     return HttpResponseRedirect(reverse('index'))
