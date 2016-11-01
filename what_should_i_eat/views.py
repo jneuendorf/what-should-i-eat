@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from os.path import basename
 
 import recipe_book
 
@@ -11,11 +12,16 @@ def index(request):
     # TODO: add the logic here
     recipe = recipes[0]
     tags = recipe_book.views.get_tags()
-    images = (image.image for image in recipe_book.views.get_images_for_recipe(recipe.id))
+    ingredients = recipe_book.views.get_ingredients()
+    images = (
+        {"url": image.image.url, "name": basename(image.image.url)}
+        for image in recipe.image_set.all()
+    )
     return render(request, 'what_should_i_eat/index.html', {
         'title': 'suggested recipe',
         'recipe': recipe,
         'tags': tags,
+        'ingredients': ingredients,
         'images': images,
     })
 

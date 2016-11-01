@@ -5,6 +5,9 @@ $option-yes-color: #3c763d
 $option-yes-bg-color: #dff0d8
 $option-no-color: #a94442
 $option-no-bg-color: #f2dede
+$option-more-color: #1f1e1e
+$option-more-bg-color: #ececec
+$option-more-scale: 0.6
 
 .options
     text-align: center
@@ -28,33 +31,56 @@ $option-no-bg-color: #f2dede
             font-size: $option-font-size * 1.2
 
         &.yes
-            color: $option-yes-color
             background-color: $option-yes-bg-color
             border-color: darken($option-yes-bg-color, 25%)
+            color: $option-yes-color
             float: right
             margin-right: $options-margin
             &:hover
                 background-color: darken($option-yes-bg-color, 10%)
         &.no
-            color: $option-no-color
             background-color: $option-no-bg-color
             border-color: darken($option-no-bg-color, 25%)
+            color: $option-no-color
             float: left
             margin-left: $options-margin
             &:hover
                 background-color: darken($option-no-bg-color, 10%)
+        &.more
+            background-color: $option-more-bg-color
+            border-color: darken($option-more-bg-color, 25%)
+            color: $option-more-color
+            float: right
+            font-size: $option-font-size * $option-more-scale
+            height: $option-size * $option-more-scale
+            margin-top: $option-size * (1 - $option-more-scale) / 2
+            width: $option-size * $option-more-scale
+            &:hover
+                background-color: darken($option-more-bg-color, 10%)
 
-.choose-tags
-    .tag
-        cursor: pointer
+.option-contents
+    display: none
+    padding-bottom: 10px
 
-        &.unselected
-            background-color: rgb(195, 195, 195) !important
+    .choose
+        margin-top: 0
+        text-align: center
 
-.recipe_name
+        &:not(:last-child)
+            margin-bottom: 25px
+            
+        .tag, .ingredient
+            cursor: pointer
+
+            &.unselected
+                background-color: rgb(195, 195, 195) !important
+
+.recipe
     margin-top: 50px
-    margin-bottom: 10px
-    text-align: center
+    .recipe-name
+        margin-bottom: 10px
+        // margin-top: 50px
+        text-align: center
 
-    h1
-        margin: 0
+        .recipe-name-text
+            margin: 0

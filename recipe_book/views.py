@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 
-from .models import Recipe, Tag
+from .models import Recipe, Tag, Ingredient
 from .forms import AddRecipeForm
 
 
@@ -50,6 +50,9 @@ def get_recipe(recipe_id):
 
 def get_tags():
     return Tag.objects.all()
+
+def get_ingredients():
+    return Ingredient.objects.all()
 
 def get_images_for_recipe(recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)

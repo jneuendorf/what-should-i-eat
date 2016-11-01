@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Recipe, Tag, Image
+from .models import Recipe, Tag, Image, Ingredient, IngredientAmount
 
 
 # Register your models here.
@@ -16,3 +16,5 @@ from .models import Recipe, Tag, Image
 admin.site.register(Recipe)
 admin.site.register(Tag)
 admin.site.register(Image)
+admin.site.register(Ingredient)
+admin.site.register(IngredientAmount)

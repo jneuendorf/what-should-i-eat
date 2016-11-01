@@ -9,7 +9,7 @@
     {# <link href="{% static 'shared/css/select2.min.css' %}" rel="stylesheet" type="text/css" />#}
 
     <script type="text/javascript" src="{% static 'what_should_i_eat/js/index.coffee'|compile %}"></script>
-    {# <script type="text/javascript" src="{% static 'shared/js/select2.full.min.js' %}"></script>#}
+    <script type="text/javascript" src="{% static 'shared/js/slick.min.js' %}"></script>
     <!-- <script type="text/javascript">
         {% autoescape off %}
             window.tag_colors = {{ recipe.tags.all|json }};
@@ -38,29 +38,45 @@
                 </div>
             </a>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-4">
             <a href="{% url 'dismiss_recipe' recipe.id %}">
                 <div class="option no">
                     <span class="glyphicon glyphicon-remove"></span>
                 </div>
             </a>
         </div>
+        <div class="col-xs-2">
+            <div class="option more">
+                <span class="glyphicon glyphicon-cog"></span>
+            </div>
+        </div>
     </div>
 
-    <h1 class="choose-tags">
-        {% for tag in tags %}
-            {% include "recipe_book/tag.html" %}
-        {% endfor %}
-    </h1>
-
-    <div class="alert alert-info recipe_name">
-        <h1>
-            {{ recipe.name }}
-        </h1>
+    <div class="option-contents">
+        <h2 class="choose tags">
+            {% for tag in tags %}
+                {% include "recipe_book/tag.html" %}
+            {% endfor %}
+        </h2>
+        <h2 class="choose ingredients">
+            {% for ingredient in ingredients %}
+                <span class="label ingredient" style="background-color: {{ingredient.color}};" data-id="{{ingredient.id}}">{{ingredient.name}}</span>
+            {% endfor %}
+        </h2>
     </div>
 
-    <div class="row">
-        <div class="col-xs-12 col-md-6 carousel">
+    <div class="row recipe">
+        <div class="col-xs-5">
+            <div class="alert alert-info recipe-name">
+                <h2 class="recipe-name-text">
+                    {{ recipe.name }}
+                </h2>
+            </div>
+        </div>
+        <div class="col-xs-2">
+
+        </div>
+        <div class="col-xs-5 carousel">
             {% for image in images %}
                 <img src="{{image.url}}" alt="{{ recipe.name }} {{forloop.counter}}" title="{{ recipe.name }} {{forloop.counter}}" />
             {% endfor %}
