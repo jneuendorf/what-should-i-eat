@@ -1,0 +1,17 @@
+<div class="row recipe">
+    <div class="col-xs-5">
+        <div class="alert alert-info recipe-name">
+            <h2 class="recipe-name-text">
+                {{ recipe.name }}
+            </h2>
+        </div>
+    </div>
+    <div class="col-xs-2">
+
+    </div>
+    <div class="col-xs-5 carousel">
+        {% for image in images %}
+            <img src="{{image.url}}" alt="{{ recipe.name }} {{forloop.counter}}" title="{{ recipe.name }} {{forloop.counter}}" />
+        {% endfor %}
+    </div>
+</div>

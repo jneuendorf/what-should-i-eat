@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^cook_recipe/(?P<recipe_id>[0-9]+)/$', views.cook_recipe, name='cook_recipe'),
     url(r'^dismiss_recipe/(?P<recipe_id>[0-9]+)/$', views.dismiss_recipe, name='dismiss_recipe'),
+    url(r'^recipe_overview/(?P<recipe_id>[0-9]+)/$', views.recipe_overview, name='recipe_overview'),
     # recipe book
     url(r'^recipe-book/', include('recipe_book.urls')),
     # admin
