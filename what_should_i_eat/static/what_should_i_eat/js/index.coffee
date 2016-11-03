@@ -3,13 +3,27 @@ $(document).ready () ->
 
     option_contents = $(".option-contents")
     $(".options").on "click", ".option.more", () ->
-        console.log "her"
         option_contents.slideToggle()
+        return true
 
-    $(".choose").on "click", ".tag, .ingredient", () ->
-        console.log "clicked on tag"
-        $tag = $(@)
-        $tag.toggleClass "unselected"
+    $cook_btn = $(".option.yes").closest("a")
+    $dismiss_btn = $(".option.no").closest("a")
+    tags = $(".choose .tag")
+    ingredients = $(".choose .ingredient")
+    recipe_overview_url = $("#recipe-overview-url").val()
+
+    tags.add(ingredients).click () ->
+        $(@).toggleClass "unselected"
+        $.getJSON(
+        # $.post(
+            recipe_overview_url
+            {
+                tags: ($(tag).attr("data-id") for tag in tags.filter(":not(.unselected)"))
+                ingredients: ($(ingredient).attr("data-id") for ingredient in ingredients.filter(":not(.unselected)"))
+            }
+            (json) ->
+                $(".recipe_overview").replaceWith(json.html)
+        )
         return true
 
     carousel = $(".carousel")
