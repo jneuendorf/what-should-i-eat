@@ -1,7 +1,7 @@
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
-from .models import Recipe, Tag, Ingredient
+from .models import Recipe, Tag
 from .forms import AddRecipeForm
 
 
@@ -13,6 +13,7 @@ def index(request):
         'title': 'recipe book',
         'recipes': recipes,
     })
+
 
 def add(request):
     # if this is a POST request we need to process the form data
@@ -36,24 +37,7 @@ def detail(request, recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)
     return render(request, 'recipe_book/detail.html', {'recipe': recipe})
 
+
 def tags(request):
     tags = Tag.objects.order_by('name')
     return render(request, 'recipe_book/tags.html', {'tags': tags})
-
-
-# API to other apps
-def get_recipes():
-    return Recipe.objects.all()
-
-def get_recipe(recipe_id):
-    return get_object_or_404(Recipe, pk=recipe_id)
-
-def get_tags():
-    return Tag.objects.order_by('name')
-
-def get_ingredients():
-    return Ingredient.objects.order_by('name')
-
-def get_images_for_recipe(recipe_id):
-    recipe = get_object_or_404(Recipe, pk=recipe_id)
-    return recipe.image_set.all()

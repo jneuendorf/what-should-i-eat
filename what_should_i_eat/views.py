@@ -18,7 +18,7 @@ def suggested_recipe(recipes, tags, ingredients):
     print("ingredients:", ingredients)
     recipes = [
         recipe
-        for recipe in recipes.order_by("-cooked_last", "priority")
+        for recipe in recipes.order_by("-cooked_last", "-priority")
         if not (
             set(recipe.tags.all()).isdisjoint(tags) and
             set(recipe.ingredients.all()).isdisjoint(ingredients)
@@ -65,6 +65,7 @@ def index(request):
 
 def cook_recipe(request, recipe_id):
     recipe = Recipe.objects.get(pk=recipe_id)
+    recipe.priority
     # TODO: do the logic here
     print("chose this recipe #" + recipe_id)
     return HttpResponseRedirect(reverse(
@@ -100,7 +101,11 @@ def recipe_overview(request, recipe_id):
         )),
     )
     context = {
-        "recipe": recipe,
+        "recipe": (
+            recipe
+            if recipe is not None
+            else {"name": "No recipe found"}
+        ),
         "images": prepare_images(recipe),
     }
     return JsonResponse({

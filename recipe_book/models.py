@@ -60,6 +60,3 @@ class Image(models.Model):
         on_delete=models.CASCADE,
         related_name="images"
     )
-
-    # def __str__(self):
-    #     return "<img src='{0}'>".format(self.image.url)
