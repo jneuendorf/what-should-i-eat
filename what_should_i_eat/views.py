@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
-from os.path import basename
+from os import path
 
 from recipe_book.models import Recipe, Tag, Ingredient
 
@@ -31,6 +31,19 @@ def suggested_recipe(recipes, tags, ingredients):
     return None
 
 
+# extracts the url and name of all images belonging to a recipe
+def prepare_images(recipe):
+    if recipe is None:
+        return []
+    return [
+        {
+            "url": image.image.url,
+            "name": path.basename(image.image.url),
+        }
+        for image in recipe.images.all()
+    ]
+
+
 # URL-MAPPING FUNCTIONS
 
 def index(request):
@@ -41,16 +54,12 @@ def index(request):
         set(tags),
         set(ingredients)
     )
-    images = (
-        {"url": image.image.url, "name": basename(image.image.url)}
-        for image in recipe.images.all()
-    )
     return render(request, "what_should_i_eat/index.html", {
         "title": "suggested recipe",
         "recipe": recipe,
         "tags": tags,
         "ingredients": ingredients,
-        "images": images,
+        "images": prepare_images(recipe),
     })
 
 
@@ -90,13 +99,9 @@ def recipe_overview(request, recipe_id):
             ]
         )),
     )
-    images = (
-        {"url": image.image.url, "name": basename(image.image.url)}
-        for image in recipe.images.all()
-    )
     context = {
         "recipe": recipe,
-        "images": images,
+        "images": prepare_images(recipe),
     }
     return JsonResponse({
         "urls": {
