@@ -16,6 +16,8 @@ class Tag(models.Model):
 def ingredient_image_location(instance, filename):
     filename, file_extension = os.path.splitext(filename)
     return "ingredient_images/{0}{1}".format(instance.name, file_extension)
+
+
 class Ingredient(models.Model):
     name = models.CharField(max_length=200)
     image = models.ImageField(upload_to=ingredient_image_location, blank=True)
@@ -32,7 +34,10 @@ class Recipe(models.Model):
     cooked_last = models.DateField("cooked last on")
     priority = models.PositiveIntegerField(default=0)
     tags = models.ManyToManyField(Tag)
-    ingredients = models.ManyToManyField(Ingredient, through="IngredientAmount")
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        through="IngredientAmount"
+    )
 
     def __str__(self):
         return self.name
@@ -46,9 +51,15 @@ class IngredientAmount(models.Model):
 
 def recipe_image_location(instance, filename):
     return "recipe_images/{0}/{1}".format(instance.recipe.id, filename)
+
+
 class Image(models.Model):
     image = models.ImageField(upload_to=recipe_image_location)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name="images"
+    )
 
     # def __str__(self):
     #     return "<img src='{0}'>".format(self.image.url)

@@ -49,10 +49,10 @@ def get_recipe(recipe_id):
     return get_object_or_404(Recipe, pk=recipe_id)
 
 def get_tags():
-    return Tag.objects.all()
+    return Tag.objects.order_by('name')
 
 def get_ingredients():
-    return Ingredient.objects.all()
+    return Ingredient.objects.order_by('name')
 
 def get_images_for_recipe(recipe_id):
     recipe = get_object_or_404(Recipe, pk=recipe_id)

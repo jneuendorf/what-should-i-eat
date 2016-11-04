@@ -14,8 +14,8 @@ $(document).ready () ->
 
     tags.add(ingredients).click () ->
         $(@).toggleClass "unselected"
-        $.getJSON(
-        # $.post(
+        # $.getJSON(
+        $.post(
             recipe_overview_url
             {
                 tags: ($(tag).attr("data-id") for tag in tags.filter(":not(.unselected)"))
