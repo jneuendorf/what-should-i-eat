@@ -7,8 +7,9 @@ $(document).ready () ->
         carousel = $(".carousel")
         carousel.slick({
             infinite: true
-            slidesToShow: Math.min(3, carousel.find("img").length)
-            slidesToScroll: 3
+            # slidesToShow: Math.min(3, carousel.find("img").length)
+            slidesToShow: 1
+            slidesToScroll: 1
         })
 
 

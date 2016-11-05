@@ -5,6 +5,7 @@
 
 {% block head %}
     {{ block.super }}
+    <link href="{% static 'shared/css/slick.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'what_should_i_eat/css/index.sass'|compile %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'what_should_i_eat/css/recipe_overview.sass'|compile %}" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{% static 'what_should_i_eat/js/index.coffee'|compile %}"></script>
