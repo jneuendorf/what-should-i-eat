@@ -29,15 +29,15 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     name = models.CharField(max_length=200)
-    ingredients = models.CharField(max_length=400)
+    # ingredients = models.CharField(max_length=400)
     description = models.TextField()
     cooked_last = models.DateField("cooked last on")
     priority = models.PositiveIntegerField(default=0)
     tags = models.ManyToManyField(Tag)
-    ingredients = models.ManyToManyField(
-        Ingredient,
-        through="IngredientAmount"
-    )
+    # ingredients = models.ManyToManyField(
+    #     Ingredient,
+    #     through="IngredientAmount"
+    # )
 
     def __str__(self):
         return self.name
@@ -45,8 +45,19 @@ class Recipe(models.Model):
 
 class IngredientAmount(models.Model):
     ingredient = models.ForeignKey(Ingredient)
-    recipe = models.ForeignKey(Recipe)
-    amount = models.FloatField(default=1)
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name="ingredients"
+    )
+    amount = models.CharField(max_length=50, default="")
+
+    def __str__(self):
+        return "{0} of {1} for {2}".format(
+            self.amount,
+            self.ingredient,
+            self.recipe
+        )
 
 
 def recipe_image_location(instance, filename):
