@@ -21,7 +21,7 @@ def ingredient_image_location(instance, filename):
 class Ingredient(models.Model):
     name = models.CharField(max_length=200)
     image = models.ImageField(upload_to=ingredient_image_location, blank=True)
-    color = ColorField(default="#e9c871")
+    color = ColorField(default="#e9c871", blank=True)
 
     def __str__(self):
         return self.name
