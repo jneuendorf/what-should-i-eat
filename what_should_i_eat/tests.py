@@ -39,15 +39,15 @@ class SuggestedRecipeTests(TestCase):
 
     def test_setup(self):
         self.assertEqual(
-            self.recipe1.ingredients.all()[0].ingredient.name,
+            self.recipe1.ingredients.all()[0].name,
             self.ingredient1_name
         )
         self.assertEqual(
-            self.recipe1.ingredients.all()[0].amount,
+            self.recipe1.ingredient_amounts.all()[0].amount,
             self.ingredient_amount1_amount
         )
         self.assertIs(
-            self.recipe1.ingredients.all()[0].recipe,
+            self.recipe1.ingredient_amounts.all()[0].recipe,
             self.recipe1
         )
         self.assertEqual(
@@ -136,9 +136,10 @@ class SuggestedRecipeTests(TestCase):
 
             self.assertTrue(
                 set(suggested_recipe.tags.all()) <= tags or
-                {ingredient_amount.ingredient
-                 for ingredient_amount in suggested_recipe.ingredients.all()}
-                <= ingredients
+                set(suggested_recipe.ingredients.all()) <= ingredients
+                # {ingredient_amount.ingredient
+                #  for ingredient_amount in suggested_recipe.ingredients.all()}
+                # <= ingredients
             )
 
             if len(tags) > 0:

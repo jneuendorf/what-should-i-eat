@@ -14,7 +14,7 @@ from recipe_book.models import Recipe, Tag, Ingredient
 def suggest_recipe(recipes, tags, ingredients):
     return (
         recipes
-        .filter(Q(tags__in=tags) | Q(ingredients__ingredient__in=ingredients))
+        .filter(Q(tags__in=tags) | Q(ingredients__in=ingredients))
         .order_by("cooked_last", "-priority")
         .first()
     )

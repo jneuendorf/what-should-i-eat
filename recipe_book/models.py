@@ -33,10 +33,10 @@ class Recipe(models.Model):
     cooked_last = models.DateField("cooked last on")
     priority = models.PositiveIntegerField(default=0)
     tags = models.ManyToManyField(Tag)
-    # ingredients = models.ManyToManyField(
-    #     Ingredient,
-    #     through="IngredientAmount"
-    # )
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        through="IngredientAmount"
+    )
 
     def __str__(self):
         return self.name
@@ -46,7 +46,7 @@ class IngredientAmount(models.Model):
     ingredient = models.ForeignKey(Ingredient)
     recipe = models.ForeignKey(
         Recipe,
-        related_name="ingredients"
+        related_name="ingredient_amounts"
     )
     amount = models.CharField(max_length=50, default="")
 
