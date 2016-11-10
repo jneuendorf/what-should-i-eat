@@ -29,7 +29,6 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     name = models.CharField(max_length=200)
-    # ingredients = models.CharField(max_length=400)
     description = models.TextField()
     cooked_last = models.DateField("cooked last on")
     priority = models.PositiveIntegerField(default=0)
@@ -47,7 +46,6 @@ class IngredientAmount(models.Model):
     ingredient = models.ForeignKey(Ingredient)
     recipe = models.ForeignKey(
         Recipe,
-        on_delete=models.CASCADE,
         related_name="ingredients"
     )
     amount = models.CharField(max_length=50, default="")

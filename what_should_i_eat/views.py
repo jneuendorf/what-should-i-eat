@@ -1,8 +1,9 @@
-from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from os import path
 
 from recipe_book.models import Recipe, Tag, Ingredient
@@ -10,25 +11,13 @@ from recipe_book.models import Recipe, Tag, Ingredient
 
 # HELPERS
 
-def suggested_recipe(recipes, tags, ingredients):
-    # TODO: add the logic here
-    # find all recipes that have at least 1 common tag or 1 common ingredient
-    print("in suggested_recipe()..............................")
-    print("tags:", tags)
-    print("ingredients:", ingredients)
-    recipes = [
-        recipe
-        for recipe in recipes.order_by("-cooked_last", "-priority")
-        if not (
-            set(recipe.tags.all()).isdisjoint(tags) and
-            set(recipe.ingredients.all()).isdisjoint(ingredients)
-        )
-    ]
-    print("matched recipes:")
-    print(recipes)
-    if len(recipes) > 0:
-        return recipes[0]
-    return None
+def suggest_recipe(recipes, tags, ingredients):
+    return (
+        recipes
+        .filter(Q(tags__in=tags) | Q(ingredients__ingredient__in=ingredients))
+        .order_by("cooked_last", "-priority")
+        .first()
+    )
 
 
 # extracts the url and name of all images belonging to a recipe
@@ -49,10 +38,10 @@ def prepare_images(recipe):
 def index(request):
     tags = Tag.objects.all()
     ingredients = Ingredient.objects.all()
-    recipe = suggested_recipe(
+    recipe = suggest_recipe(
         Recipe.objects.all(),
-        set(tags),
-        set(ingredients)
+        tags,
+        ingredients
     )
     return render(request, "what_should_i_eat/index.html", {
         "title": "suggested recipe",
@@ -85,20 +74,20 @@ def dismiss_recipe(request, recipe_id):
 @csrf_exempt
 def recipe_overview(request, recipe_id):
     template = loader.get_template("what_should_i_eat/recipe_overview.html")
-    recipe = suggested_recipe(
+    recipe = suggest_recipe(
         Recipe.objects.all(),
-        set(Tag.objects.filter(
+        Tag.objects.filter(
             pk__in=[
                 int(tag_id)
                 for tag_id in request.POST.getlist("tags[]")
             ]
-        )),
-        set(Ingredient.objects.filter(
+        ),
+        Ingredient.objects.filter(
             pk__in=[
                 int(ingredient_id)
                 for ingredient_id in request.POST.getlist("ingredients[]")
             ]
-        )),
+        ),
     )
     context = {
         "recipe": (
