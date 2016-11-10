@@ -41,6 +41,15 @@ class Recipe(models.Model):
     def __str__(self):
         return self.name
 
+    def ingredient_list(self):
+        return ", ".join(
+            "{0} {1}".format(
+                ingredient_amount.amount,
+                ingredient_amount.ingredient.name
+            )
+            for ingredient_amount in self.ingredient_amounts.all()
+        )
+
 
 class IngredientAmount(models.Model):
     ingredient = models.ForeignKey(Ingredient)

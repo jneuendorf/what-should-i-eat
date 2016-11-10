@@ -1,3 +1,4 @@
+import datetime
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -54,9 +55,9 @@ def index(request):
 
 def cook_recipe(request, recipe_id):
     recipe = Recipe.objects.get(pk=recipe_id)
-    recipe.priority
-    # TODO: do the logic here
-    print("chose this recipe #" + recipe_id)
+    recipe.priority = 0
+    recipe.cooked_last = datetime.date.today()
+    recipe.save()
     return HttpResponseRedirect(reverse(
         "recipe_book:detail",
         args=(recipe_id)
