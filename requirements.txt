@@ -5,3 +5,4 @@ django-compressor
 django-sass-processor
 django-static-precompiler
 Pillow
+django-bootstrap-form

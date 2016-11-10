@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'colorfield',
     'jquery',
     'static_precompiler',
+    'bootstrapform',
     # 'tinymce',
 
     'shared',
