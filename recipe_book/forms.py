@@ -1,5 +1,6 @@
 from django import forms
 
+import fuelux_widgets
 from .models import Recipe
 
 
@@ -7,5 +8,22 @@ from .models import Recipe
 class AddRecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        # fields = ['pub_date', 'headline', 'content', 'reporter']
-        fields = '__all__'
+        fields = [
+            'name',
+            # ingredients here only for field ordering (is overridden below)
+            'ingredients',
+            'description',
+            # 'cooked_last',
+            # 'images',
+        ]
+    ingredients = forms.CharField()
+    tags = forms.CharField(widget=fuelux_widgets.Pillbox(attrs={
+        "items": [
+            {
+                "class": "class-a",
+                "value": "a",
+                "title": "1st item"
+            }
+        ],
+        "suggestions": ["asdf", "bsdf"]
+    }))

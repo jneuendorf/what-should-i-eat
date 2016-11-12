@@ -1,5 +1,11 @@
 {% extends "what_should_i_eat/base.html" %}
+{% load staticfiles %}
 {% load bootstrap %}
+
+{% block head %}
+    {{ block.super }}
+    <link href="{% static 'shared/css/fuelux.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
 
 {% block nav %}
     <ul class="pager">
@@ -13,7 +19,7 @@
 {% endblock %}
 
 {% block content %}
-    <form action="/your-name/" method="post" class="form-horizontal">
+    <form action="{% url 'recipe_book:add' %}" method="post" class="form-horizontal fuelux">
         {% csrf_token %}
         {{ form|bootstrap_horizontal }}
         <div class="form-group">
@@ -22,4 +28,8 @@
             </div>
         </div>
     </form>
+{% endblock %}
+
+{% block footer %}
+    <script type="text/javascript" src="{% static 'shared/js/fuelux.js' %}"></script>
 {% endblock %}

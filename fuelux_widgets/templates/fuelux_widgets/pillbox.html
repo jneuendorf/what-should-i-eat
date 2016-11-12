@@ -1,0 +1,40 @@
+<div class="pillbox" {% if doNotInit %}data-initialize="pillbox"{% endif %} id="{{id}}">
+    <ul class="clearfix pill-group">
+        {% for item in items %}
+            <li class="btn btn-default pill{% if item.class %} {{item.class}}{% endif %}" {% if item.value %}data-value="{{item.value}}"{% endif %}>
+                <span>{{item.title}}</span>
+                <span class="glyphicon glyphicon-close">
+                    <span class="sr-only">Remove</span>
+                </span>
+            </li>
+        {% endfor %}
+        <li class="pillbox-input-wrap btn-group">
+            <a class="pillbox-more">and <span class="pillbox-more-count"></span> more...</a>
+            <input type="text" class="form-control dropdown-toggle pillbox-add-item" placeholder="add item">
+            <button type="button" class="dropdown-toggle sr-only" data-toggle="dropdown" data-flip="auto">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="suggest dropdown-menu" role="menu"></ul>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#{{id}}").pillbox({
+            edit: true,
+            onKeyDown: function(data, callback) {
+                callback({
+                    data: [
+                        {% for suggestion in suggestions %}
+                            {
+                                text: "{{suggestion}}",
+                                value: "{{suggestion}}"
+                            },
+                        {% endfor %}
+                    ]
+                });
+            }
+        });
+    });
+</script>

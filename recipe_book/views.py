@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+# from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
 from .models import Recipe, Tag
@@ -23,14 +23,19 @@ def add(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
+            print(form.data)
             # ...
             # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
+            # return HttpResponseRedirect('/thanks/')
     # if a GET (or any other method) we'll create a blank form
-    else:
-        form = AddRecipeForm()
+    # else:
+    #     form = AddRecipeForm()
+    form = AddRecipeForm()
 
-    return render(request, 'recipe_book/add.html', {'form': form})
+    return render(request, 'recipe_book/add.html', {
+        'form': form,
+        'title': 'new recipe',
+    })
 
 
 def detail(request, recipe_id):

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # 'tinymce',
 
     'shared',
+    'fuelux_widgets',
     'recipe_book',
     'what_should_i_eat',
 ]

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-{% load compile_static %}
 {% load staticfiles %}
+{% load compile_static %}
 <html>
 <head>
     {% block head %}
@@ -9,6 +9,7 @@
         <link href="{% static 'shared/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
         <link href="{% static 'what_should_i_eat/css/base.sass'|compile %}" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'shared/js/bootstrap.min.js' %}"></script>
     {% endblock %}
 </head>
 <body>
