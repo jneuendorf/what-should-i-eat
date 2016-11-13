@@ -1,16 +1,20 @@
-<div class="pillbox" {% if doNotInit %}data-initialize="pillbox"{% endif %} id="{{id}}">
+<div class="pillbox" {% if auto_init %}data-initialize="pillbox"{% endif %} id="{{id}}">
     <ul class="clearfix pill-group">
         {% for item in items %}
             <li class="btn btn-default pill{% if item.class %} {{item.class}}{% endif %}" {% if item.value %}data-value="{{item.value}}"{% endif %}>
-                <span>{{item.title}}</span>
+                <span>{{item.text}}</span>
                 <span class="glyphicon glyphicon-close">
                     <span class="sr-only">Remove</span>
                 </span>
             </li>
         {% endfor %}
         <li class="pillbox-input-wrap btn-group">
-            <a class="pillbox-more">and <span class="pillbox-more-count"></span> more...</a>
-            <input type="text" class="form-control dropdown-toggle pillbox-add-item" placeholder="add item">
+            <a class="pillbox-more">
+                {{more.before}}
+                <span class="pillbox-more-count"></span>
+                {{more.after}}
+            </a>
+            <input type="text" class="form-control dropdown-toggle pillbox-add-item" placeholder="{{add_item}}">
             <button type="button" class="dropdown-toggle sr-only" data-toggle="dropdown" data-flip="auto">
                 <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
@@ -19,22 +23,26 @@
         </li>
     </ul>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#{{id}}").pillbox({
-            edit: true,
-            onKeyDown: function(data, callback) {
-                callback({
-                    data: [
-                        {% for suggestion in suggestions %}
-                            {
-                                text: "{{suggestion}}",
-                                value: "{{suggestion}}"
-                            },
-                        {% endfor %}
-                    ]
-                });
-            }
+{% if js %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#{{id}}").pillbox({
+                edit: {{js.edit|lower}},
+                {% if js.suggestions %}
+                    onKeyDown: function(data, callback) {
+                        callback({
+                            data: [
+                                {% for suggestion in js.suggestions %}
+                                    {
+                                        text: "{{suggestion}}",
+                                        value: "{{suggestion}}"
+                                    },
+                                {% endfor %}
+                            ]
+                        });
+                    }
+                {% endif %}
+            });
         });
-    });
-</script>
+    </script>
+{% endif %}

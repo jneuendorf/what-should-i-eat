@@ -18,12 +18,18 @@ class AddRecipeForm(forms.ModelForm):
         ]
     ingredients = forms.CharField()
     tags = forms.CharField(widget=fuelux_widgets.Pillbox(attrs={
+        "id": "tags",
         "items": [
             {
                 "class": "class-a",
                 "value": "a",
-                "title": "1st item"
+                "text": "1st item"
             }
         ],
-        "suggestions": ["asdf", "bsdf"]
+        "add_item": "click me",
+        # "js": False,
+        "js": {
+            "suggestions": ["asdf", "bsdf"]
+        },
     }))
+    images = forms.FileField()
