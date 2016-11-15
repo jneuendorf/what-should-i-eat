@@ -72,3 +72,20 @@
         </div>
     </div>
 </div>
+{% if js %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#{{id}}").datepicker({
+                {% if js.allow_past_dates %}
+                    allowPastDates: {{js.allow_past_dates|lower}},
+                {% endif %}
+                {% if js.restricted %}
+                    restricted: {{js.restricted|safe}},
+                {% endif %}
+                {% if js.moment_config %}
+                    momentConfig: {{js.moment_config|safe}},
+                {% endif %}
+            });
+        });
+    </script>
+{% endif %}

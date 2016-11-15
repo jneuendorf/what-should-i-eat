@@ -64,12 +64,3 @@ class Datepicker(FuelUxWidget):
 
     def use_required_attribute(self, initial):
         return False
-
-    def set_suggestions(self, suggestions):
-        if not suggestions.__iter__:
-            raise ValueError(
-                "Pillbox::set_suggestions: suggestions must be iterable."
-            )
-        print("my attrs ", self.attrs)
-        self.attrs["js"]["suggestions"] = suggestions
-        return self

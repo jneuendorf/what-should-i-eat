@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from django import forms
 
 import fuelux_widgets
@@ -29,12 +30,33 @@ class AddRecipeForm(forms.ModelForm):
             }
         )
     )
-    images = forms.FileField(required=False)
+    images = forms.FileField(
+        required=False,
+        widget=forms.ClearableFileInput(
+            attrs={
+                'multiple': True
+            }
+        )
+    )
     cooked_last = forms.DateField(
         required=False,
         widget=fuelux_widgets.Datepicker(
             attrs={
-                "style": "width: 300px;"
+                "style": "width: 300px;",
+                "js": {
+                    "allow_past_dates": True,
+                    "restricted": (
+                        "[{{from: '{}', to: Infinity}}]".format(
+                            "{:%Y-%m-%d}".format(
+                                date.today() + timedelta(days=1)
+                            )
+                        )
+                    ),
+                    "moment_config": {
+                        "culture": "en",
+                        "format": "YYYY-MM-DD"
+                    },
+                },
             }
         )
     )
