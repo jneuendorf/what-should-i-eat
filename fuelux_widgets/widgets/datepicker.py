@@ -57,9 +57,14 @@ class Datepicker(FuelUxWidget):
             "Sa",
         ],
         "today": "Today",
-        "month_header": "Month",
-        "year_header": "Year",
-        "js": False
+        "prev_month": "Previous Month",
+        "next_month": "Next Month",
+        "js": False,
+        # for the "wheel" (when clicked on the month)
+        "month": "Month",
+        "year": "Year",
+        "select": "Select",
+        "back": "Return to Calendar",
     }
 
     def use_required_attribute(self, initial):
