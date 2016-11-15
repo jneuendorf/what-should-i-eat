@@ -3,30 +3,29 @@ from .fuelux_widget import FuelUxWidget
 
 class Datepicker(FuelUxWidget):
     """
-    Widget for FuelUX's pillbox.
+    Widget for FuelUX's datepicker.
     See http://getfuelux.com/javascript.html#datepicker.
 
     Possible attributes:
-    - auto_init
-        - whether to add 'data-initialize="pillbox"'
-    - id (required)
-    - items (list of dictionaries with keys 'class', 'value' and 'text')
-        - list of items that are already present in the pillbox
-    - more
-        - used to generate something like 'and 8 more'
-        - more.before
-        - more.after
-    - add_item
-        - placeholder text to display in the area the user has to click
-          in order to add items
+    - auto_init (boolean)
+        - whether to add 'data-initialize="datepicker"'
+    - id (string)
+    - style (string)
+    - month_names (list of strings)
+    - day_names_short (list of strings)
+    - today (string)
+    - prev_month (string)
+    - next_month (string)
+    - month (string)
+    - year (string)
+    - select (string)
+    - back (string)
     - js (dictionary or boolean).
       Set this to False to take care ot the JavaScript yourself.
       The dictionary can contain any of the following keys:
-        - acceptKeyCodes (list of integers)
-        - edit (boolean)
-        - readonly (boolean or -1)
-        - truncate (boolean)
-        - suggestions (list of strings)
+        - allow_past_dates (boolean)
+        - restricted (list)
+        - moment_config (dictionary)
       See FuelUX for more details.
     """
 

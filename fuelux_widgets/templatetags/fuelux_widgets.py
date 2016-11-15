@@ -22,7 +22,6 @@ def slice(value, indices):
 
 @register.filter(name='json')
 def json(value):
-    # print(str(value))
     try:
         return dumps(value, cls=DjangoJSONEncoder)
     except Exception as e:

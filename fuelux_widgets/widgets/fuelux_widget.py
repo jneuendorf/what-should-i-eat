@@ -17,8 +17,6 @@ class FuelUxWidget(forms.Widget):
     default_attrs = {}
 
     def __init__(self, attrs={}):
-        # print("__init__: default_attrs =", self.default_attrs)
-        # print("__init__: attrs =", attrs)
         missing_required_attrs = []
         for required_attr in self.required_attrs:
             if not attrs.get(required_attr):
@@ -32,11 +30,7 @@ class FuelUxWidget(forms.Widget):
             )
 
         super().__init__(attrs)
-        print()
-        print("merging", self.attrs)
-        print("into", self.default_attrs)
         self.attrs = self.dict_merge(self.default_attrs, self.attrs)
-        print("__init__: self.attrs =", self.attrs)
 
     def dict_merge(self, dict1, dict2):
         """
@@ -58,7 +52,6 @@ class FuelUxWidget(forms.Widget):
         return dict1
 
     def render(self, name, value, attrs={}):
-        # print(name, value, attrs)
         return render_to_string(
             "fuelux_widgets/{}.html".format(self.template_name),
             self.build_attrs(attrs)

@@ -7,16 +7,16 @@ class Pillbox(FuelUxWidget):
     See http://getfuelux.com/javascript.html#pillbox.
 
     Possible attributes:
-    - auto_init
+    - auto_init (boolean)
         - whether to add 'data-initialize="pillbox"'
-    - id
+    - id (string)
     - items (list of dictionaries with keys 'class', 'value' and 'text')
         - list of items that are already present in the pillbox
-    - more
+    - more (dictionary)
         - used to generate something like 'and 8 more'
-        - more.before
-        - more.after
-    - add_item
+        - more.before (string)
+        - more.after (string)
+    - add_item (string)
         - placeholder text to display in the area the user has to click
           in order to add items
     - js (dictionary or boolean).
@@ -31,7 +31,6 @@ class Pillbox(FuelUxWidget):
     """
 
     template_name = "pillbox"
-    # required_attrs = ["id"]
     default_attrs = {
         "auto_init": True,
         "add_item": "add item",
@@ -40,25 +39,17 @@ class Pillbox(FuelUxWidget):
             "after": "more",
         },
         "js": {
-            # "acceptKeyCodes": [13, 188]
             "edit": False
-            # "suggestions": []
-
         }
     }
 
     def use_required_attribute(self, initial):
         return False
 
-    # TODO: ??
-    # def value_from_datadict(self, data, files, name):
-    #     return data.get(name)
-
     def set_suggestions(self, suggestions):
         if not suggestions.__iter__:
             raise ValueError(
                 "Pillbox::set_suggestions: suggestions must be iterable."
             )
-        print("my attrs ", self.attrs)
         self.attrs["js"]["suggestions"] = suggestions
         return self
