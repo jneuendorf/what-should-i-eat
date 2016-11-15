@@ -1,6 +1,8 @@
 from django import forms
 from django.template.loader import render_to_string
 
+import copy
+
 
 class FuelUxWidget(forms.Widget):
     """
@@ -15,30 +17,34 @@ class FuelUxWidget(forms.Widget):
     default_attrs = {}
 
     def __init__(self, attrs={}):
+        print("__init__: default_attrs =", self.default_attrs)
+        print("__init__: attrs =", attrs)
         missing_required_attrs = []
         for required_attr in self.required_attrs:
             if not attrs.get(required_attr):
                 missing_required_attrs.append(required_attr)
 
         if len(missing_required_attrs) > 0:
+            # print("missing attrs: ", missing_required_attrs)
             raise ValueError(
                 "FuelUxWidget requires the following attributes: {}."
                 .format(", ".join(missing_required_attrs))
             )
 
-        super(FuelUxWidget, self).__init__(attrs)
+        super().__init__(attrs)
         self.attrs = self.dict_merge(self.default_attrs, self.attrs)
-        print(self.attrs)
+        print("__init__: self.attrs =", self.attrs)
 
     def dict_merge(self, dict1, dict2):
         """
         recursive update (not in-place).
         dict2 has precendence for equal keys.
         """
-        dict1 = dict1.copy()
+        dict1 = copy.deepcopy(dict1)
+
         for key in dict2:
             val = dict2[key]
-            print("key", key, type(key), key in dict1)
+            # print("key", key, type(key), key in dict1)
             if type(val) is dict:
                 # merge dictionaries
                 if key in dict1 and type(dict1[key]) is dict:
@@ -49,8 +55,9 @@ class FuelUxWidget(forms.Widget):
         return dict1
 
     def render(self, name, value, attrs={}):
-        print(name, value, attrs)
+        # print(name, value, attrs)
         return render_to_string(
             "fuelux_widgets/{}.html".format(self.template_name),
             self.build_attrs(attrs)
+            # self.dict_merge(self.attrs, attrs)
         )

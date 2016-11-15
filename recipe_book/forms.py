@@ -1,7 +1,7 @@
 from django import forms
 
 import fuelux_widgets
-from .models import Recipe
+from .models import Recipe, Tag, Ingredient
 
 
 # Create the form class.
@@ -16,20 +16,34 @@ class AddRecipeForm(forms.ModelForm):
             # 'cooked_last',
             # 'images',
         ]
-    ingredients = forms.CharField()
-    tags = forms.CharField(widget=fuelux_widgets.Pillbox(attrs={
-        "id": "tags",
-        "items": [
-            {
-                "class": "class-a",
-                "value": "a",
-                "text": "1st item"
+    ingredients = forms.CharField(widget=fuelux_widgets.Pillbox(
+        attrs={
+            "add_item": "add ingredients",
+        }
+    ))
+    tags = forms.CharField(
+        required=False,
+        widget=fuelux_widgets.Pillbox(
+            attrs={
+                "add_item": "add tags",
             }
-        ],
-        "add_item": "click me",
-        # "js": False,
-        "js": {
-            "suggestions": ["asdf", "bsdf"]
-        },
-    }))
-    images = forms.FileField()
+        )
+    )
+    images = forms.FileField(required=False)
+    cooked_last = forms.DateField(
+        required=False,
+        widget=fuelux_widgets.Datepicker(
+            attrs={
+                "style": "width: 300px;"
+            }
+        )
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["tags"].widget.set_suggestions(
+            Tag.objects.all()
+        )
+        self.fields["ingredients"].widget.set_suggestions(
+            Ingredient.objects.all()
+        )

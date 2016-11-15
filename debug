@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+python3 -m pdb manage.py runserver
+
+# add "import pdb; pdb.set_trace()" to python source to set a break point

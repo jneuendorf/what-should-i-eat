@@ -16,6 +16,7 @@ def index(request):
 
 
 def add(request):
+    # import pdb; pdb.set_trace()
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -23,7 +24,7 @@ def add(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            print(form.data)
+            print("form data:", form.data)
             # ...
             # redirect to a new URL:
             # return HttpResponseRedirect('/thanks/')

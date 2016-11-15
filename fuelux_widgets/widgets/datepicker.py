@@ -1,15 +1,15 @@
 from .fuelux_widget import FuelUxWidget
 
 
-class Pillbox(FuelUxWidget):
+class Datepicker(FuelUxWidget):
     """
     Widget for FuelUX's pillbox.
-    See http://getfuelux.com/javascript.html#pillbox.
+    See http://getfuelux.com/javascript.html#datepicker.
 
     Possible attributes:
     - auto_init
         - whether to add 'data-initialize="pillbox"'
-    - id
+    - id (required)
     - items (list of dictionaries with keys 'class', 'value' and 'text')
         - list of items that are already present in the pillbox
     - more
@@ -30,29 +30,40 @@ class Pillbox(FuelUxWidget):
       See FuelUX for more details.
     """
 
-    template_name = "pillbox"
-    # required_attrs = ["id"]
+    template_name = "datepicker"
     default_attrs = {
         "auto_init": True,
-        "add_item": "add item",
-        "more": {
-            "before": "and",
-            "after": "more",
-        },
-        "js": {
-            # "acceptKeyCodes": [13, 188]
-            "edit": False
-            # "suggestions": []
-
-        }
+        "month_names": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ],
+        "day_names_short": [
+            "Su",
+            "Mo",
+            "Tu",
+            "We",
+            "Th",
+            "Fr",
+            "Sa",
+        ],
+        "today": "Today",
+        "month_header": "Month",
+        "year_header": "Year",
+        "js": False
     }
 
     def use_required_attribute(self, initial):
         return False
-
-    # TODO: ??
-    # def value_from_datadict(self, data, files, name):
-    #     return data.get(name)
 
     def set_suggestions(self, suggestions):
         if not suggestions.__iter__:
