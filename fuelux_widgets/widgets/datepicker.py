@@ -3,21 +3,29 @@ from .fuelux_widget import FuelUxWidget
 
 class Datepicker(FuelUxWidget):
     """
-    Widget for FuelUX's pillbox.
+    Widget for FuelUX's datepicker.
     See http://getfuelux.com/javascript.html#datepicker.
 
     Possible attributes:
-    - auto_init
-        - whether to add 'data-initialize="pillbox"'
-    - id (required)
+    - auto_init (boolean)
+        - whether to add 'data-initialize="datepicker"'
+    - id (string)
+    - style (string)
+    - month_names (list of strings)
+    - day_names_short (list of strings)
+    - today (string)
+    - prev_month (string)
+    - next_month (string)
+    - month (string)
+    - year (string)
+    - select (string)
+    - back (string)
     - js (dictionary or boolean).
       Set this to False to take care ot the JavaScript yourself.
       The dictionary can contain any of the following keys:
-        - acceptKeyCodes (list of integers)
-        - edit (boolean)
-        - readonly (boolean or -1)
-        - truncate (boolean)
-        - suggestions (list of strings)
+        - allow_past_dates (boolean)
+        - restricted (list)
+        - moment_config (dictionary)
       See FuelUX for more details.
     """
 
@@ -48,18 +56,15 @@ class Datepicker(FuelUxWidget):
             "Sa",
         ],
         "today": "Today",
-        "month_header": "Month",
-        "year_header": "Year",
-        "js": False
+        "prev_month": "Previous Month",
+        "next_month": "Next Month",
+        "js": False,
+        # for the "wheel" (when clicked on the month)
+        "month": "Month",
+        "year": "Year",
+        "select": "Select",
+        "back": "Return to Calendar",
     }
 
     def use_required_attribute(self, initial):
         return False
-
-    def set_suggestions(self, suggestions):
-        if not suggestions.__iter__:
-            raise ValueError(
-                "Pillbox::set_suggestions: suggestions must be iterable."
-            )
-        self.attrs["js"]["suggestions"] = suggestions
-        return self

@@ -59,7 +59,6 @@ def add(request):
             # )
             # recipe1.save()
 
-
             # form = AddRecipeForm()
 
             # redirect to a new URL:

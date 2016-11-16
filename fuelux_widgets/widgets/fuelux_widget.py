@@ -68,18 +68,17 @@ class FuelUxWidget(forms.Widget):
 
         for key in dict2:
             val = dict2[key]
-            # print("key", key, type(key), key in dict1)
             if type(val) is dict:
                 # merge dictionaries
                 if key in dict1 and type(dict1[key]) is dict:
                     dict1[key] = self.dict_merge(dict1[key], val)
-                # else: replace key in dict1 (same when not merging)
+                else:
+                    dict1[key] = val
             else:
                 dict1[key] = val
         return dict1
 
     def render(self, name, value, attrs={}):
-        # print(name, value, attrs)
         return render_to_string(
             "fuelux_widgets/{}.html".format(self.template_name),
             self.build_attrs(attrs)
