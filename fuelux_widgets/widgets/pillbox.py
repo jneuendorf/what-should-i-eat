@@ -47,12 +47,24 @@ class Pillbox(FuelUxWidget):
         }
     }
 
+    def __init__(self, attrs={}):
+        print("whats given?", attrs)
+        super().__init__(attrs)
+
     def use_required_attribute(self, initial):
         return False
 
     # TODO: ??
     # def value_from_datadict(self, data, files, name):
     #     return data.get(name)
+
+    def set_items(self, items):
+        if not items.__iter__:
+            raise ValueError(
+                "Pillbox::set_items: items must be iterable."
+            )
+        self.attrs["items"] = items
+        return self
 
     def set_suggestions(self, suggestions):
         if not suggestions.__iter__:

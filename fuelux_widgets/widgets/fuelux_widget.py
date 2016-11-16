@@ -61,3 +61,10 @@ class FuelUxWidget(forms.Widget):
             self.build_attrs(attrs)
             # self.dict_merge(self.attrs, attrs)
         )
+
+    # set name only if not passed in attrs (therefore contained in self.attrs)
+    # (used in FuelUxForm)
+    def set_name(self, name):
+        if "name" not in self.attrs:
+            self.attrs["name"] = name
+        return self

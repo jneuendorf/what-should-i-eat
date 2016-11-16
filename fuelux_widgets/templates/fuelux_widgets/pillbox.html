@@ -1,4 +1,5 @@
 <div class="pillbox" {% if auto_init %}data-initialize="pillbox"{% endif %} id="{{id}}">
+    <input type="hidden" name="{{name}}">
     <ul class="clearfix pill-group">
         {% for item in items %}
             <li class="btn btn-default pill{% if item.class %} {{item.class}}{% endif %}" {% if item.value %}data-value="{{item.value}}"{% endif %}>
@@ -27,7 +28,12 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#{{id}}").pillbox({
-                edit: {{js.edit|lower}},
+                {% if js.edit %}
+                    edit: {{js.edit|lower}},
+                {% endif %}
+                {% if js.readonly %}
+                    readonly: {{js.readonly|lower}},
+                {% endif %}
                 {% if js.suggestions %}
                     onKeyDown: function(data, callback) {
                         callback({
@@ -40,6 +46,10 @@
                                 {% endfor %}
                             ]
                         });
+                    },
+                    onAdd: function(data, callback) {
+                        console.log(data);
+                        callback(data);
                     }
                 {% endif %}
             });
