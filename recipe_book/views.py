@@ -1,8 +1,11 @@
-# from django.http import HttpResponseRedirect
+import random
+import re
+
 from django.shortcuts import get_object_or_404, render
 
-from .models import Recipe, Tag
 from .forms import AddRecipeForm
+from .models import Recipe, Tag, Ingredient
+from . import utils
 
 
 # Create your views here.
@@ -16,53 +19,70 @@ def index(request):
 
 
 def add(request):
-    # import pdb; pdb.set_trace()
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = AddRecipeForm(request.POST)
-        # print("form data:", form.data)
-        # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            print("form data:", form.data)
-            print("form cleaned data:", form.cleaned_data)
+            # PARSE TAG NAMES AND INSERT NEW TAGS INTO THE DATABASE
+            existing_tags = set(tag.name for tag in Tag.objects.all())
+            submitted_tags = set(form.cleaned_data["tags"][0:-1].split(","))
+            diff = submitted_tags - existing_tags
+            for tag in diff:
+                color = "#%02X%02X%02X" % (
+                    random.randint(0, 255),
+                    random.randint(0, 255),
+                    random.randint(0, 255)
+                )
+                Tag.objects.create(
+                    name=tag,
+                    color=color
+                )
 
-            # directly applicable
-            done = ["name", "description"]
+            # PARSE INGREDIENTS AND INSERT NEW ONES INTO THE DATABASE
+            existing_ingredients = set(
+                ingredient.name for ingredient in Ingredient.objects.all()
+            )
+            submitted_ingredients = set(
+                re.split("\s*,\s*", form.cleaned_data["ingredients"])
+            )
 
-            # form cleaned data: {'ingredients_choices': '', 'name': 'test recipe', 'description': 'adsf', 'ingredients': '50 g Butter', 'cooked_last': datetime.date(2016, 11, 16), 'images': None, 'tags': 'Italian,'}
+            submitted_ingredient_names = set([
+                utils.extract_ingredient_name(submitted_ingredient)
+                for submitted_ingredient in submitted_ingredients
+            ])
+            submitted_ingredient_amounts = set()
+            print(submitted_ingredient_names)
+            diff = submitted_ingredient_names - existing_ingredients
+            for ingredient in diff:
+                Ingredient.objects.create(
+                    name=ingredient,
+                )
 
-            # ingredient1_name = "ingredient1"
-            # tag1_name = "tag1"
-            # recipe1_name = "recipe1"
-            # recipe1_desc = "description1"
-            # ingredient_amount1_amount = "2 pieces"
-            #
-            # ingredient1 = Ingredient.objects.create(
-            #     name=ingredient1_name
-            # )
-            # tag1 = Tag.objects.create(
-            #     name=tag1_name,
-            #     color="#cccccc"
-            # )
-            # recipe1 = Recipe.objects.create(
+            # recipe = Recipe.objects.create(
             #     name=recipe1_name,
             #     description=recipe1_desc,
             #     cooked_last=datetime.date.today(),
             # )
-            # recipe1.tags = [tag1]
+
+            # recipe.tags = Tag.objects.filter(name__in=submitted_tags)
+
             # IngredientAmount.objects.create(
             #     ingredient=ingredient1,
-            #     recipe=recipe1,
+            #     recipe=recipe,
             #     amount=ingredient_amount1_amount,
             # )
-            # recipe1.save()
+            # recipe.save()
+
+            # form cleaned data: {
+            #     'ingredients_choices': '',
+            #     'name': 'test recipe',
+            #     'description': 'adsf',
+            #     'ingredients': '50 g Butter',
+            #     'cooked_last': datetime.date(2016, 11, 16),
+            #     'images': None,
+            #     'tags': 'Italian,'
+            # }
 
             # form = AddRecipeForm()
-
-            # redirect to a new URL:
-            # return HttpResponseRedirect('/thanks/')
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AddRecipeForm()

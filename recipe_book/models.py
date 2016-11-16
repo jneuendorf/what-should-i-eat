@@ -6,7 +6,7 @@ import os
 # Create your models here.
 
 class Tag(models.Model):
-    name = models.CharField(max_length=80)
+    name = models.CharField(max_length=80, unique=True)
     color = ColorField(default="#2f9de3")
 
     def __str__(self):
