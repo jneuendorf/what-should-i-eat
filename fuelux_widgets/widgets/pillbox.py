@@ -1,4 +1,5 @@
 from .fuelux_widget import FuelUxWidget
+# from .. import utils
 
 
 class Pillbox(FuelUxWidget):
@@ -32,7 +33,26 @@ class Pillbox(FuelUxWidget):
 
     template_name = "pillbox"
     # required_attrs = ["id"]
+    # default_attrs = utils.dict_merge(
+    #     super().default_attrs,
+    #     {
+    #         # "required": True,
+    #         "auto_init": True,
+    #         "add_item": "add item",
+    #         "more": {
+    #             "before": "and",
+    #             "after": "more",
+    #         },
+    #         "js": {
+    #             # "acceptKeyCodes": [13, 188]
+    #             "edit": False
+    #             # "suggestions": []
+    #
+    #         }
+    #     }
+    # )
     default_attrs = {
+        # "required": True,
         "auto_init": True,
         "add_item": "add item",
         "more": {
@@ -43,13 +63,8 @@ class Pillbox(FuelUxWidget):
             # "acceptKeyCodes": [13, 188]
             "edit": False
             # "suggestions": []
-
         }
     }
-
-    def __init__(self, attrs={}):
-        print("whats given?", attrs)
-        super().__init__(attrs)
 
     def use_required_attribute(self, initial):
         return False

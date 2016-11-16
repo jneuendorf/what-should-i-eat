@@ -4,6 +4,26 @@ from django.template.loader import render_to_string
 import copy
 
 
+def dict_merge(dict1, dict2):
+    """
+    recursive update (not in-place).
+    dict2 has precendence for equal keys.
+    """
+    dict1 = copy.deepcopy(dict1)
+
+    for key in dict2:
+        val = dict2[key]
+        # print("key", key, type(key), key in dict1)
+        if type(val) is dict:
+            # merge dictionaries
+            if key in dict1 and type(dict1[key]) is dict:
+                dict1[key] = dict_merge(dict1[key], val)
+            # else: replace key in dict1 (same when not merging)
+        else:
+            dict1[key] = val
+    return dict1
+
+
 class FuelUxWidget(forms.Widget):
     """
     The super class for all fuel ux widgets.
@@ -14,11 +34,11 @@ class FuelUxWidget(forms.Widget):
     template_name = None
     # list of attributes required for the widget to work
     required_attrs = []
-    default_attrs = {}
+    default_attrs = {
+        "required": True,
+    }
 
     def __init__(self, attrs={}):
-        print("__init__: default_attrs =", self.default_attrs)
-        print("__init__: attrs =", attrs)
         missing_required_attrs = []
         for required_attr in self.required_attrs:
             if not attrs.get(required_attr):
@@ -33,8 +53,12 @@ class FuelUxWidget(forms.Widget):
 
         super().__init__(attrs)
         self.attrs = self.dict_merge(self.default_attrs, self.attrs)
-        print("__init__: self.attrs =", self.attrs)
 
+    # @classmethod
+    def extend_default_attrs(self, default_attrs):
+        return self.dict_merge(self.default_attrs, default_attrs)
+
+    # @classmethod
     def dict_merge(self, dict1, dict2):
         """
         recursive update (not in-place).

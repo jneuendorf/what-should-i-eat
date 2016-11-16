@@ -1,5 +1,5 @@
 <div class="pillbox" {% if auto_init %}data-initialize="pillbox"{% endif %} id="{{id}}">
-    <input type="hidden" name="{{name}}">
+    <input type="hidden" name="{{name}}" {% if required %}required{% endif %}>
     <ul class="clearfix pill-group">
         {% for item in items %}
             <li class="btn btn-default pill{% if item.class %} {{item.class}}{% endif %}" {% if item.value %}data-value="{{item.value}}"{% endif %}>
@@ -27,7 +27,9 @@
 {% if js %}
     <script type="text/javascript">
         $(document).ready(function() {
-            $("#{{id}}").pillbox({
+            var pillbox = $("#{{id}}");
+            var pillbox_value_input = pillbox.find("input[type='hidden'][name='{{name}}']");
+            pillbox.pillbox({
                 {% if js.edit %}
                     edit: {{js.edit|lower}},
                 {% endif %}
@@ -47,8 +49,23 @@
                             ]
                         });
                     },
+                    // these 2 functions keep track of the current value of the pillbox (for form submission)
                     onAdd: function(data, callback) {
                         console.log(data);
+                        pillbox_value_input.val(
+                            pillbox_value_input.val() +
+                            data.value +
+                            ","
+                        );
+                        callback(data);
+                    },
+                    onRemove: function(data, callback) {
+                        pillbox_value_input.val(
+                            pillbox_value_input.val().replace(
+                                data.value + ",",
+                                ""
+                            )
+                        );
                         callback(data);
                     }
                 {% endif %}

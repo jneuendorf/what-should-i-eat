@@ -21,6 +21,7 @@ class AddRecipeForm(forms.ModelForm, fuelux_widgets.FuelUxForm):
     ingredients = forms.CharField()
     ingredients_choices = forms.CharField(
         label="",
+        required=False,
         widget=fuelux_widgets.Pillbox(
             attrs={
                 "add_item": "",

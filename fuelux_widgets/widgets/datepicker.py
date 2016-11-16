@@ -10,15 +10,6 @@ class Datepicker(FuelUxWidget):
     - auto_init
         - whether to add 'data-initialize="pillbox"'
     - id (required)
-    - items (list of dictionaries with keys 'class', 'value' and 'text')
-        - list of items that are already present in the pillbox
-    - more
-        - used to generate something like 'and 8 more'
-        - more.before
-        - more.after
-    - add_item
-        - placeholder text to display in the area the user has to click
-          in order to add items
     - js (dictionary or boolean).
       Set this to False to take care ot the JavaScript yourself.
       The dictionary can contain any of the following keys:
@@ -70,6 +61,5 @@ class Datepicker(FuelUxWidget):
             raise ValueError(
                 "Pillbox::set_suggestions: suggestions must be iterable."
             )
-        print("my attrs ", self.attrs)
         self.attrs["js"]["suggestions"] = suggestions
         return self
