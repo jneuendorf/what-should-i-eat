@@ -1,5 +1,3 @@
-import copy
-
 from django import forms
 from django.template.loader import render_to_string
 
@@ -8,19 +6,18 @@ from ..utils import dict_merge
 
 class FuelUxWidgetMeta(forms.Widget.__class__):
 
-    # def __new__(meta_class, name, bases, dic):
-    #     return super().__new__(name, bases, dic)
-
     def __init__(cls, name, bases, dic):
         super().__init__(name, bases, dic)
         default_attrs = {}
-        print("...............bases", bases)
+        required_attrs = set()
         for base in reversed(bases):
             if hasattr(base, "default_attrs"):
-                print("base", base)
                 default_attrs = dict_merge(default_attrs, base.default_attrs)
-        default_attrs = dict_merge(default_attrs, cls.default_attrs)
-        cls.default_attrs = default_attrs
+            if hasattr(base, "required_attrs"):
+                # union
+                required_attrs |= set(base.required_attrs)
+        cls.default_attrs = dict_merge(default_attrs, cls.default_attrs)
+        cls.required_attrs = list(required_attrs)
 
 
 class FuelUxWidget(forms.Widget, metaclass=FuelUxWidgetMeta):
@@ -51,31 +48,7 @@ class FuelUxWidget(forms.Widget, metaclass=FuelUxWidgetMeta):
             )
 
         super().__init__(attrs)
-        self.attrs = self.dict_merge(self.default_attrs, self.attrs)
-
-    # @classmethod
-    def extend_default_attrs(self, default_attrs):
-        return self.dict_merge(self.default_attrs, default_attrs)
-
-    # @classmethod
-    def dict_merge(self, dict1, dict2):
-        """
-        recursive update (not in-place).
-        dict2 has precendence for equal keys.
-        """
-        dict1 = copy.deepcopy(dict1)
-
-        for key in dict2:
-            val = dict2[key]
-            if type(val) is dict:
-                # merge dictionaries
-                if key in dict1 and type(dict1[key]) is dict:
-                    dict1[key] = self.dict_merge(dict1[key], val)
-                else:
-                    dict1[key] = val
-            else:
-                dict1[key] = val
-        return dict1
+        self.attrs = dict_merge(self.default_attrs, self.attrs)
 
     def render(self, name, value, attrs={}):
         return render_to_string(
