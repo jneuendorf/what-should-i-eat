@@ -33,26 +33,7 @@ class Pillbox(FuelUxWidget):
 
     template_name = "pillbox"
     # required_attrs = ["id"]
-    # default_attrs = utils.dict_merge(
-    #     super().default_attrs,
-    #     {
-    #         # "required": True,
-    #         "auto_init": True,
-    #         "add_item": "add item",
-    #         "more": {
-    #             "before": "and",
-    #             "after": "more",
-    #         },
-    #         "js": {
-    #             # "acceptKeyCodes": [13, 188]
-    #             "edit": False
-    #             # "suggestions": []
-    #
-    #         }
-    #     }
-    # )
     default_attrs = {
-        # "required": True,
         "auto_init": True,
         "add_item": "add item",
         "more": {

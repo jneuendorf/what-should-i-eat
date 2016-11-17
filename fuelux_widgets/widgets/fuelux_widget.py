@@ -1,30 +1,29 @@
+import copy
+
 from django import forms
 from django.template.loader import render_to_string
 
-import copy
+from ..utils import dict_merge
 
 
-def dict_merge(dict1, dict2):
-    """
-    recursive update (not in-place).
-    dict2 has precendence for equal keys.
-    """
-    dict1 = copy.deepcopy(dict1)
+class FuelUxWidgetMeta(forms.Widget.__class__):
 
-    for key in dict2:
-        val = dict2[key]
-        # print("key", key, type(key), key in dict1)
-        if type(val) is dict:
-            # merge dictionaries
-            if key in dict1 and type(dict1[key]) is dict:
-                dict1[key] = dict_merge(dict1[key], val)
-            # else: replace key in dict1 (same when not merging)
-        else:
-            dict1[key] = val
-    return dict1
+    # def __new__(meta_class, name, bases, dic):
+    #     return super().__new__(name, bases, dic)
+
+    def __init__(cls, name, bases, dic):
+        super().__init__(name, bases, dic)
+        default_attrs = {}
+        print("...............bases", bases)
+        for base in reversed(bases):
+            if hasattr(base, "default_attrs"):
+                print("base", base)
+                default_attrs = dict_merge(default_attrs, base.default_attrs)
+        default_attrs = dict_merge(default_attrs, cls.default_attrs)
+        cls.default_attrs = default_attrs
 
 
-class FuelUxWidget(forms.Widget):
+class FuelUxWidget(forms.Widget, metaclass=FuelUxWidgetMeta):
     """
     The super class for all fuel ux widgets.
     Documentation is missing. Source code at
