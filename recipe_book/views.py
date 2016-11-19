@@ -114,8 +114,6 @@ def add(request):
                 .format(Tag.objects.filter(name__in=submitted_tags))
             )
 
-            # ingredients = Ingredient.objects.all()
-            # ingredients = set(Ingredient.objects.all()) |
             for ingredient in submitted_ingredients:
                 name = submitted_ingredient_names[ingredient]
                 # NOTE: This is difficult because 'name' is a plural
