@@ -1,14 +1,33 @@
+import errno
+import os
 import random
 import re
 
+from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 
 from .forms import AddRecipeForm
-from .models import Recipe, Tag, Ingredient
+from .models import Recipe, Tag, Ingredient, Image
 from . import utils
 
 
-# Create your views here.
+# HELPER FUNCTIONS
+
+def handle_uploaded_file(uploaded_file, upload_to):
+    upload_to = os.path.join(settings.MEDIA_ROOT, upload_to)
+    # create the directory if necessary
+    try:
+        os.makedirs(os.path.dirname(upload_to))
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise ValueError("...")
+    with open(upload_to, "wb+") as destination:
+        for chunk in uploaded_file.chunks():
+            destination.write(chunk)
+    return upload_to
+
+
+# VIEW FUNCTIONS
 
 def index(request):
     recipes = Recipe.objects.order_by('name')
@@ -30,8 +49,6 @@ def add(request):
                 else set()
             )
             diff = submitted_tags - existing_tags
-            print(existing_tags, submitted_tags)
-            print("diff", diff)
             for tag in diff:
                 color = "#%02X%02X%02X" % (
                     random.randint(0, 255),
@@ -43,7 +60,7 @@ def add(request):
                 #     color=color
                 # )
                 print(
-                    "would create a tag with name '{0}' and color {1}"
+                    "would create tag with name '{0}' and color {1}"
                     .format(tag, color)
                 )
 
@@ -146,6 +163,24 @@ def add(request):
                 )
 
             # recipe.save()
+
+            images = request.FILES.getlist("images")
+            print(images)
+            for image in images:
+                # handle_uploaded_file(
+                #     uploaded_file=image,
+                #     upload_to=Image.image.field.upload_to(recipe, image.name)
+                # )
+                # Image.create(
+                #     recipe=recipe,
+                #     image=
+                # )
+                uploaded_to = handle_uploaded_file(
+                    uploaded_file=image,
+                    upload_to="recipe_images/_1/{}".format(image.name)
+                )
+                print("saved uploaded file to '{}'".format(uploaded_to))
+                print("would create image with recipe '{}' and image '{}'")
 
             # form cleaned data: {
             #     'ingredients_choices': '',

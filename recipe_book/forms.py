@@ -19,7 +19,13 @@ class AddRecipeForm(forms.ModelForm, fuelux_widgets.FuelUxForm):
         ]
 
     # FIELDS
-    ingredients = forms.CharField()
+    ingredients = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "comma separated list, e.g. 1 carrot, 2 slices of cucumber"
+            }
+        )
+    )
     ingredients_choices = forms.CharField(
         label="",
         required=False,
@@ -45,7 +51,7 @@ class AddRecipeForm(forms.ModelForm, fuelux_widgets.FuelUxForm):
         required=False,
         widget=forms.ClearableFileInput(
             attrs={
-                'multiple': True
+                "multiple": True
             }
         )
     )

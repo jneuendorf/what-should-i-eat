@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'recipe_book:add' %}" method="post" class="form-horizontal fuelux">
+    <form action="{% url 'recipe_book:add' %}" method="post" class="form-horizontal fuelux" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|bootstrap_horizontal }}
         <div class="form-group">

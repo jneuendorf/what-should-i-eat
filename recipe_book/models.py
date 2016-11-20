@@ -68,10 +68,21 @@ class IngredientAmount(models.Model):
 
 
 def recipe_image_location(instance, filename):
-    return "recipe_images/{0}/{1}".format(instance.recipe.id, filename)
+    if type(instance) is Image:
+        id = instance.recipe.id
+    elif type(instance) is Recipe:
+        id = instance.id
+    else:
+        raise ValueError("recipe_image_location() expects an image or recipe model.")
+    return "recipe_images/{0}/{1}".format(id, filename)
 
 
 class Image(models.Model):
+
+    # @staticmethod
+    # def recipe_image_location(instance, filename):
+    #     return "recipe_images/{0}/{1}".format(instance.recipe.id, filename)
+
     image = models.ImageField(upload_to=recipe_image_location)
     recipe = models.ForeignKey(
         Recipe,
