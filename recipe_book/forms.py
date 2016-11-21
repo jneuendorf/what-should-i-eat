@@ -2,7 +2,7 @@ from datetime import date, timedelta
 from django import forms
 
 import fuelux_widgets
-from .models import Recipe, Tag, Ingredient
+from .models import Recipe, Tag, Ingredient, Image
 # from .models import Recipe, Tag
 
 
@@ -47,14 +47,14 @@ class AddRecipeForm(forms.ModelForm, fuelux_widgets.FuelUxForm):
             }
         )
     )
-    images = forms.FileField(
-        required=False,
-        widget=forms.ClearableFileInput(
-            attrs={
-                "multiple": True
-            }
-        )
-    )
+    # images = forms.FileField(
+    #     required=False,
+    #     widget=forms.ClearableFileInput(
+    #         attrs={
+    #             "multiple": True
+    #         }
+    #     )
+    # )
     cooked_last = forms.DateField(
         required=False,
         widget=fuelux_widgets.Datepicker(
@@ -106,3 +106,11 @@ class AddRecipeForm(forms.ModelForm, fuelux_widgets.FuelUxForm):
         # self.fields["ingredients"].widget.set_suggestions(
         #     Ingredient.objects.all()
         # )
+
+
+class RecipeImageForm(forms.ModelForm):
+    class Meta:
+        model = Image
+        fields = [
+            'image',
+        ]

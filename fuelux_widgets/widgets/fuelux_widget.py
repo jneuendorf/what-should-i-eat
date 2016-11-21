@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from ..utils import dict_merge
 
 
-class FuelUxWidgetMeta(forms.Widget.__class__):
+class FuelUxWidgetMeta(type(forms.Widget)):
 
     def __init__(cls, name, bases, dic):
         super().__init__(name, bases, dic)

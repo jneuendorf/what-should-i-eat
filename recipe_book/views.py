@@ -1,30 +1,22 @@
-import errno
-import os
 import random
 import re
 
-from django.conf import settings
+from django.forms import formset_factory
 from django.shortcuts import get_object_or_404, render
 
-from .forms import AddRecipeForm
-from .models import Recipe, Tag, Ingredient, Image
+from .forms import AddRecipeForm, RecipeImageForm
+from .models import Recipe, Tag, Ingredient, IngredientAmount
 from . import utils
 
 
 # HELPER FUNCTIONS
 
-def handle_uploaded_file(uploaded_file, upload_to):
-    upload_to = os.path.join(settings.MEDIA_ROOT, upload_to)
-    # create the directory if necessary
-    try:
-        os.makedirs(os.path.dirname(upload_to))
-    except OSError as exception:
-        if exception.errno != errno.EEXIST:
-            raise ValueError("...")
-    with open(upload_to, "wb+") as destination:
-        for chunk in uploaded_file.chunks():
-            destination.write(chunk)
-    return upload_to
+def rand_color():
+    return "#%02X%02X%02X" % (
+        random.randint(0, 255),
+        random.randint(0, 255),
+        random.randint(0, 255)
+    )
 
 
 # VIEW FUNCTIONS
@@ -40,7 +32,12 @@ def index(request):
 def add(request):
     if request.method == 'POST':
         form = AddRecipeForm(request.POST)
-        if form.is_valid():
+        ImagesFormSet = formset_factory(RecipeImageForm)
+        images_formset = ImagesFormSet(
+            request.POST,
+            request.FILES,
+        )
+        if form.is_valid() and images_formset.is_valid():
             # PARSE TAG NAMES AND INSERT NEW TAGS INTO THE DATABASE
             existing_tags = set(tag.name for tag in Tag.objects.all())
             submitted_tags = (
@@ -50,18 +47,9 @@ def add(request):
             )
             diff = submitted_tags - existing_tags
             for tag in diff:
-                color = "#%02X%02X%02X" % (
-                    random.randint(0, 255),
-                    random.randint(0, 255),
-                    random.randint(0, 255)
-                )
-                # Tag.objects.create(
-                #     name=tag,
-                #     color=color
-                # )
-                print(
-                    "would create tag with name '{0}' and color {1}"
-                    .format(tag, color)
+                Tag.objects.create(
+                    name=tag,
+                    color=rand_color()
                 )
 
             # PARSE INGREDIENTS AND INSERT NEW ONES INTO THE DATABASE
@@ -72,10 +60,6 @@ def add(request):
                 re.split("\s*,\s*", form.cleaned_data["ingredients"])
             )
 
-            # submitted_ingredient_names = set([
-            #     utils.extract_ingredient_name(submitted_ingredient)
-            #     for submitted_ingredient in submitted_ingredients
-            # ])
             # map ingredient (incl. amount) -> ingredient name
             submitted_ingredient_names = {
                 submitted_ingredient: utils.extract_ingredient_name(
@@ -83,8 +67,6 @@ def add(request):
                 )
                 for submitted_ingredient in submitted_ingredients
             }
-            submitted_ingredient_amounts = set()
-            # print(submitted_ingredient_names)
             diff = (
                 set(submitted_ingredient_names.values()) -
                 existing_ingredients
@@ -93,43 +75,17 @@ def add(request):
                 name__in=submitted_ingredient_names
             ))
             for ingredient in diff:
-                # Ingredient.objects.create(
-                #     name=ingredient,
-                # )
-                # relevant_ingredients.append(Ingredient.objects.create(
-                #     name=ingredient,
-                # ))
-                relevant_ingredients.append(Ingredient(name=ingredient))
-                print(
-                    "would create ingredient with name '{0}'"
-                    .format(ingredient)
-                )
+                relevant_ingredients.append(Ingredient.objects.create(
+                    name=ingredient,
+                ))
 
-            # recipe = Recipe.objects.create(
-            #     name=form.cleaned_data["name"],
-            #     description=form.cleaned_data["description"],
-            #     cooked_last=form.cleaned_data["cooked_last"],
-            # )
-            recipe = Recipe(
+            recipe = Recipe.objects.create(
                 name=form.cleaned_data["name"],
                 description=form.cleaned_data["description"],
                 cooked_last=form.cleaned_data["cooked_last"],
             )
-            print(
-                "would create recipe with name '{0}', description '{1}' "
-                "and cooked_last '{2}'"
-                .format(
-                    form.cleaned_data["name"],
-                    form.cleaned_data["description"],
-                    form.cleaned_data["cooked_last"],
-                )
-            )
 
-            # recipe.tags = Tag.objects.filter(name__in=submitted_tags)
-            print(
-                "would set recipe.tags to {0}"
-                .format(Tag.objects.filter(name__in=submitted_tags))
-            )
+            recipe.tags = Tag.objects.filter(name__in=submitted_tags)
 
             for ingredient in submitted_ingredients:
                 name = submitted_ingredient_names[ingredient]
@@ -146,59 +102,30 @@ def add(request):
                     amount = parts[0].strip()
                     truncation += 1
 
-                # IngredientAmount.objects.create(
-                #     ingredient=ingredients.filter(name=ingredient).first(),
-                #     recipe=recipe,
-                #     amount=amount,
-                # )
-                print(
-                    "would create IngredientAmount with ingredient '{0}', "
-                    "recipe '{1}' and amount '{2}'"
-                    .format(
-                        # relevant_ingredients.get(name=ingredient),
-                        [i for i in relevant_ingredients if i.name == name][0],
-                        recipe,
-                        amount
-                    )
+                IngredientAmount.objects.create(
+                    # ingredient=ingredients.filter(name=ingredient).first(),
+                    ingredient=Ingredient.objects.get(name=name),
+                    # [i for i in relevant_ingredients if i.name == name][0],
+                    recipe=recipe,
+                    amount=amount,
                 )
 
-            # recipe.save()
+            recipe.save()
 
-            images = request.FILES.getlist("images")
-            print(images)
-            for image in images:
-                # handle_uploaded_file(
-                #     uploaded_file=image,
-                #     upload_to=Image.image.field.upload_to(recipe, image.name)
-                # )
-                # Image.create(
-                #     recipe=recipe,
-                #     image=
-                # )
-                uploaded_to = handle_uploaded_file(
-                    uploaded_file=image,
-                    upload_to="recipe_images/_1/{}".format(image.name)
-                )
-                print("saved uploaded file to '{}'".format(uploaded_to))
-                print("would create image with recipe '{}' and image '{}'")
+            # TODO: cleaned data? is already cleaned, right?
+            for image_form in images_formset:
+                image_form.instance.recipe = recipe
+                image_form.save()
 
-            # form cleaned data: {
-            #     'ingredients_choices': '',
-            #     'name': 'test recipe',
-            #     'description': 'adsf',
-            #     'ingredients': '50 g Butter',
-            #     'cooked_last': datetime.date(2016, 11, 16),
-            #     'images': None,
-            #     'tags': 'Italian,'
-            # }
-
-            # form = AddRecipeForm()
+            form = AddRecipeForm()
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AddRecipeForm()
+        images_formset = formset_factory(RecipeImageForm, extra=2)
 
     return render(request, 'recipe_book/add.html', {
         'form': form,
+        'images_formset': images_formset,
         'title': 'new recipe',
     })
 
