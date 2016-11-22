@@ -1,10 +1,10 @@
 import random
 import re
 
-from django.forms import formset_factory
+# from django.forms import formset_factory
 from django.shortcuts import get_object_or_404, render
 
-from .forms import AddRecipeForm, RecipeImageForm
+from .forms import AddRecipeForm, RecipeImageFormSet
 from .models import Recipe, Tag, Ingredient, IngredientAmount
 from . import utils
 
@@ -32,12 +32,11 @@ def index(request):
 def add(request):
     if request.method == 'POST':
         form = AddRecipeForm(request.POST)
-        ImagesFormSet = formset_factory(RecipeImageForm)
-        images_formset = ImagesFormSet(
+        recipe_image_formset = RecipeImageFormSet(
             request.POST,
             request.FILES,
         )
-        if form.is_valid() and images_formset.is_valid():
+        if form.is_valid() and recipe_image_formset.is_valid():
             # PARSE TAG NAMES AND INSERT NEW TAGS INTO THE DATABASE
             existing_tags = set(tag.name for tag in Tag.objects.all())
             submitted_tags = (
@@ -112,20 +111,20 @@ def add(request):
 
             recipe.save()
 
-            # TODO: cleaned data? is already cleaned, right?
-            for image_form in images_formset:
-                image_form.instance.recipe = recipe
-                image_form.save()
+            # cleaned data is used when saving the form
+            for recipe_image_form in recipe_image_formset:
+                recipe_image_form.instance.recipe = recipe
+                recipe_image_form.save()
 
             form = AddRecipeForm()
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AddRecipeForm()
-        images_formset = formset_factory(RecipeImageForm, extra=2)
+        recipe_image_formset = RecipeImageFormSet()
 
     return render(request, 'recipe_book/add.html', {
         'form': form,
-        'images_formset': images_formset,
+        'recipe_image_formset': recipe_image_formset,
         'title': 'new recipe',
     })
 
