@@ -149,7 +149,8 @@ RecipeImageFormSet.media = forms.Media(
     # relative to static url
     js=(
         # TODO: this does not need to be compiled once done!
-        compile_static("shared/js/formset_actions.coffee"),
+        # compile_static("shared/js/formset_actions.coffee"),
+        "shared/js/jquery.formset.js",
         compile_static("recipe_book/js/init_formset.coffee")
     )
 )
