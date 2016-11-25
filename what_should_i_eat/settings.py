@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'jquery',
     'static_precompiler',
     'bootstrapform',
-    # 'tinymce',
 
     'shared',
     'fuelux_widgets',
@@ -90,17 +89,15 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'USER': 'mydatabaseuser',
+    #     'NAME': 'mydatabase',
+    #     'TEST': {
+    #         'NAME': 'mytestdatabase',
+    #     },
+    # },
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'USER': 'mydatabaseuser',
-#         'NAME': 'mydatabase',
-#         'TEST': {
-#             'NAME': 'mytestdatabase',
-#         },
-#     },
-# }
 
 
 # Password validation
@@ -109,14 +106,11 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
+    }, {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
+    }, {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
+    }, {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
@@ -152,31 +146,3 @@ STATICFILES_FINDERS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# STATIC_PRECOMPILER_COMPILERS = (
-#     ('static_precompiler.compilers.CoffeeScript', {
-#         # "executable": "/usr/local/bin/coffee",
-#         "sourcemap_enabled": True
-#     }),
-#     ('static_precompiler.compilers.SCSS', {
-#         "executable": "/Users/jimneuendorf/.rvm/gems/ruby-2.2.3@global/bin/sass",
-#         "sourcemap_enabled": True,
-#         # "compass_enabled": True,
-#         # "load_paths": ["/path"],
-#         "precision": 8,
-#         "output_style": "compressed"
-#     }),
-# )
-
-
-# # TINYMCE
-#
-# TINYMCE_DEFAULT_CONFIG = {
-#     'plugins': "table,spellchecker,paste,searchreplace",
-#     # 'theme': "advanced",
-#     'cleanup_on_startup': True,
-#     'custom_undo_redo_levels': 30,
-#     'height': 300
-# }
-# TINYMCE_SPELLCHECKER = True
-# TINYMCE_COMPRESSOR = True
