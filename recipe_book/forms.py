@@ -109,9 +109,7 @@ class RecipeImageFormSet(modelformset_factory(Image, fields=('image',))):
 
     def save(self, *args, **kwargs):
         for form in self:
-            print("would save form", form)
-            # TODO
-            # form.save(*args, **kwargs)
+            form.save(*args, **kwargs)
         return self
 
 # This is necessary because django does not support
