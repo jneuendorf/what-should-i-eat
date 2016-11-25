@@ -6,6 +6,7 @@
 {% block head %}
     {{ block.super }}
     <link href="{% static 'shared/css/fuelux.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'recipe_book/css/add.sass'|compile %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block nav %}
@@ -53,9 +54,13 @@
     {#  #}
     <script type="text/javascript">
         $(document).ready(function() {
+            // init ingredient choices pills
             var ingredients = $("[name='ingredients']");
             $(".ingredient-choice").click(function() {
-                ingredients.val(ingredients.val() + " " + $(this).children().first().text());
+                var val = ingredients.val();
+                var new_ingredient = " " + $(this).children().first().text();
+                // ensure uniqueness
+                ingredients.val(ingredients.val().replace(new_ingredient, "") + new_ingredient);
                 return true;
             });
             return true;

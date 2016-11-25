@@ -20,10 +20,15 @@ $(document).ready () ->
     #         return input.parent()
     #
     # })
+    # form of form set = form-group that contains an according input
     $(".form-group")
         .filter (idx, elem) ->
-            return $(elem).find("[name^='recipe_image']").length > 0
+            return $(elem).find("input[name^='recipe_image']").length > 0
         .formset({
             prefix: "recipe_image"
+            addText: "+"
+            addCssClass: "btn btn-info add-row"
+            deleteText: "-"
+            deleteCssClass: "btn btn-danger btn-sm delete-row"
         })
     return true

@@ -74,14 +74,12 @@ class AddRecipeForm(forms.ModelForm, fuelux_widgets.FuelUxForm):
     )
 
     # MISC SETTINGS
-
     field_order = [
         "name",
         "ingredients",
         "ingredients_choices",
         "description",
         "tags",
-        "images",
         "cooked_last",
     ]
 
@@ -105,6 +103,8 @@ class RecipeImageFormSet(modelformset_factory(Image, fields=('image',))):
 
     def __init__(self, *args, **kwargs):
         kwargs["prefix"] = "recipe_image"
+        # prevent creating forms for all instances of Image (in the db)
+        kwargs["queryset"] = self.model._default_manager.none()
         super().__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
@@ -114,37 +114,11 @@ class RecipeImageFormSet(modelformset_factory(Image, fields=('image',))):
             # form.save(*args, **kwargs)
         return self
 
-
-# This is closured in django.forms.widgets...
-# MEDIA_TYPES = ('css', 'js')
-
-
-# Media class with support for coffescript ({% path/to/file.coffee|compile %})
-# class CompiledMedia(forms.Media):
-#
-#     # like render() but only outputting the path to the media file
-#     def paths(self):
-#         return chain(*[
-#             getattr(self, name + '_paths')()
-#             for name in MEDIA_TYPES
-#         ])
-#
-#     def js_paths(self):
-#         return [self.absolute_path(path) for path in self._js]
-#
-#     def css_paths(self):
-#         print(">>>>", self._css.keys())
-#         media = sorted(self._css.keys())
-#         return chain(*[
-#             [self.absolute_path(path) for path in self._css[medium]]
-#             for medium in media
-#         ])
-
 # This is necessary because django does not support
 # setting the media object as inner class definition for form sets
 # Possible would be to create a form with a media class
 # and derive the form set from that form.
-# But this way we can't use the 'modelformset_factory'.
+# But this way we couldn't use the 'modelformset_factory'.
 RecipeImageFormSet.media = forms.Media(
     # relative to static url
     js=(
@@ -154,7 +128,3 @@ RecipeImageFormSet.media = forms.Media(
         compile_static("recipe_book/js/init_formset.coffee")
     )
 )
-# RecipeImageFormSet.media = CompiledMedia(
-#     # relative to static url
-#     js=("recipe_book/js/formset_add_remove.coffee",)
-# )

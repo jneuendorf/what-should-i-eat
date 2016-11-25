@@ -114,13 +114,16 @@ def add(request):
             # cleaned data is used when saving the form
             for recipe_image_form in recipe_image_formset:
                 recipe_image_form.instance.recipe = recipe
-                recipe_image_form.save()
+                # recipe_image_form.save()
+            recipe_image_formset.save()
 
             form = AddRecipeForm()
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AddRecipeForm()
         recipe_image_formset = RecipeImageFormSet()
+        print(recipe_image_formset.initial)
+        print([form.initial for form in recipe_image_formset])
 
     return render(request, 'recipe_book/add.html', {
         'form': form,
