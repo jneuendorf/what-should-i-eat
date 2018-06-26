@@ -1,6 +1,7 @@
-src
-*.pyc
-recipe_book/static/**/*.css
-recipe_book/static/**/*.css.map
-/static
 .sass-cache
+*.pyc
+/static
+node_modules
+recipe_book/static/**/*.css*
+src
+venv

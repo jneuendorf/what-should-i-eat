@@ -1,0 +1,15 @@
+{
+  "name": "what-should-i-eat",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/jneuendorf/what-should-i-eat.git",
+  "author": "Jim Neuendorf <jim.neuendorf@gmx.de>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "node-sass": "^4.9.0"
+  }
+}

@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="col-xs-2"></div>
-    <div class="col-xs-5 carousel">
+    <div class="col-xs-5 fotorama" data-nav="thumbs" data-loop="true">
         {% for image in images %}
             <img src="{{image.url}}" alt="{{ recipe.name }} {{forloop.counter}}" title="{{ recipe.name }} {{forloop.counter}}" />
         {% endfor %}

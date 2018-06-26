@@ -146,3 +146,16 @@ STATICFILES_FINDERS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+NODE_BIN = os.path.join(BASE_DIR, 'node_modules', '.bin')
+STATIC_PRECOMPILER_COMPILERS = (
+    ('static_precompiler.compilers.Babel', {
+        'executable': os.path.join(NODE_BIN, 'babel'),
+        # 'modules': 'amd',
+    }),
+    ('static_precompiler.compilers.SASS', {
+        'executable': os.path.join(NODE_BIN, 'node-sass'),
+        'compass_enabled': False,
+    }),
+)

@@ -123,6 +123,6 @@ RecipeImageFormSet.media = forms.Media(
         # TODO: this does not need to be compiled once done!
         # compile_static("shared/js/formset_actions.coffee"),
         "shared/js/jquery.formset.js",
-        compile_static("recipe_book/js/init_formset.coffee")
+        compile_static("recipe_book/js/init_formset.es6")
     )
 )
